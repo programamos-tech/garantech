@@ -30,7 +30,7 @@ export function CustomerFields({
   onEmailChange,
 }: CustomerFieldsProps) {
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-4 gap-y-4">
+    <div className="grid w-full grid-cols-1 sm:grid-cols-2 gap-x-4 gap-y-4">
       <Input
         name="name"
         label="Nombre completo *"

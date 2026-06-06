@@ -17,9 +17,9 @@ export default async function DashboardLayout({
   return (
     <div className="min-h-screen bg-background">
       <Sidebar store={store} />
-      <div className="lg:pl-64">
+      <div className="lg:pl-64 min-w-0">
         <Topbar store={store} user={user} />
-        <main className="px-3 pt-4 sm:px-4 sm:pt-6 lg:px-8 max-w-[1600px] lg:mx-auto pb-[calc(var(--mobile-nav-height)+1rem+env(safe-area-inset-bottom,0px))] lg:pb-8">
+        <main className="w-full min-w-0 max-w-none px-3 pt-4 sm:px-4 sm:pt-6 lg:px-8 pb-[calc(var(--mobile-nav-height)+1rem+env(safe-area-inset-bottom,0px))] lg:pb-8">
           {children}
         </main>
       </div>

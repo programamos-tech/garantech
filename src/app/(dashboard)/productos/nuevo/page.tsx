@@ -1,9 +1,10 @@
 import { ProductForm } from "@/components/products/product-form";
+import { FormPage } from "@/components/ui/responsive-list";
 
 export default function NuevoProductoPage() {
   return (
-    <div className="max-w-6xl">
+    <FormPage>
       <ProductForm />
-    </div>
+    </FormPage>
   );
 }

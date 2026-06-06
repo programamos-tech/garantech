@@ -39,35 +39,38 @@ const TYPE_STYLES: Record<
   garantia: {
     label: "Garantía",
     icon: ShieldCheck,
-    iconClass: "text-emerald-400",
+    iconClass: "text-emerald-600 dark:text-emerald-400",
     badgeClass:
-      "bg-emerald-500/20 text-emerald-200 ring-1 ring-emerald-400/30",
-    rowActiveClass: "bg-emerald-500/12",
-    rowHoverClass: "hover:bg-emerald-500/8",
+      "bg-emerald-50 text-emerald-700 ring-1 ring-emerald-200 dark:bg-emerald-500/20 dark:text-emerald-200 dark:ring-emerald-400/30",
+    rowActiveClass: "bg-emerald-50 dark:bg-emerald-500/12",
+    rowHoverClass: "hover:bg-emerald-50/90 dark:hover:bg-emerald-500/8",
   },
   reclamo: {
     label: "Reclamo",
     icon: Wrench,
-    iconClass: "text-amber-400",
-    badgeClass: "bg-amber-500/20 text-amber-200 ring-1 ring-amber-400/30",
-    rowActiveClass: "bg-amber-500/12",
-    rowHoverClass: "hover:bg-amber-500/8",
+    iconClass: "text-amber-600 dark:text-amber-400",
+    badgeClass:
+      "bg-amber-50 text-amber-800 ring-1 ring-amber-200 dark:bg-amber-500/20 dark:text-amber-200 dark:ring-amber-400/30",
+    rowActiveClass: "bg-amber-50 dark:bg-amber-500/12",
+    rowHoverClass: "hover:bg-amber-50/90 dark:hover:bg-amber-500/8",
   },
   cliente: {
     label: "Cliente",
     icon: Users,
-    iconClass: "text-sky-400",
-    badgeClass: "bg-sky-500/20 text-sky-200 ring-1 ring-sky-400/30",
-    rowActiveClass: "bg-sky-500/12",
-    rowHoverClass: "hover:bg-sky-500/8",
+    iconClass: "text-sky-600 dark:text-sky-400",
+    badgeClass:
+      "bg-sky-50 text-sky-700 ring-1 ring-sky-200 dark:bg-sky-500/20 dark:text-sky-200 dark:ring-sky-400/30",
+    rowActiveClass: "bg-sky-50 dark:bg-sky-500/12",
+    rowHoverClass: "hover:bg-sky-50/90 dark:hover:bg-sky-500/8",
   },
   producto: {
     label: "Producto",
     icon: Package,
-    iconClass: "text-violet-400",
-    badgeClass: "bg-violet-500/20 text-violet-200 ring-1 ring-violet-400/30",
-    rowActiveClass: "bg-violet-500/12",
-    rowHoverClass: "hover:bg-violet-500/8",
+    iconClass: "text-violet-600 dark:text-violet-400",
+    badgeClass:
+      "bg-violet-50 text-violet-700 ring-1 ring-violet-200 dark:bg-violet-500/20 dark:text-violet-200 dark:ring-violet-400/30",
+    rowActiveClass: "bg-violet-50 dark:bg-violet-500/12",
+    rowHoverClass: "hover:bg-violet-50/90 dark:hover:bg-violet-500/8",
   },
 };
 
@@ -230,7 +233,7 @@ export function GlobalSearch() {
             className="w-full rounded-full border border-white/20 bg-white/10 py-2 pl-10 pr-4 text-sm text-white placeholder:text-white/50 focus:border-white/40 focus:outline-none focus:ring-2 focus:ring-white/10 transition-all lg:border-gray-200 lg:bg-white lg:text-gray-900 lg:placeholder:text-gray-400 lg:focus:border-brand/30 lg:focus:ring-brand/10 lg:dark:border-gray-700 lg:dark:bg-gray-900 lg:dark:text-gray-100 lg:dark:placeholder:text-gray-500 lg:dark:focus:border-brand/40 lg:dark:focus:ring-brand/20"
           />
           {loading && (
-            <Loader2 className="absolute right-3.5 top-1/2 h-4 w-4 -translate-y-1/2 animate-spin text-white/60 lg:text-gray-400" />
+            <Loader2 className="absolute right-3.5 top-1/2 h-4 w-4 -translate-y-1/2 animate-spin text-white/60 lg:text-gray-400 lg:dark:text-gray-500" />
           )}
         </div>
       </form>
@@ -243,15 +246,15 @@ export function GlobalSearch() {
         >
           <div className="max-h-[min(60vh,22rem)] overflow-y-auto overscroll-contain py-1.5">
             {loading && hits.length === 0 ? (
-              <p className="px-4 py-6 text-center text-sm text-slate-400">
+              <p className="px-4 py-6 text-center text-sm text-gray-500 dark:text-slate-400">
                 Buscando...
               </p>
             ) : hits.length === 0 ? (
-              <p className="px-4 py-6 text-center text-sm text-slate-400">
+              <p className="px-4 py-6 text-center text-sm text-gray-500 dark:text-slate-400">
                 Sin resultados para &ldquo;{query.trim()}&rdquo;
               </p>
             ) : (
-              <ul className="divide-y divide-white/8">
+              <ul className="divide-y divide-gray-100 dark:divide-white/8">
                 {hits.map((hit, index) => {
                   const styles = TYPE_STYLES[hit.kind];
                   const Icon = styles.icon;
@@ -270,7 +273,7 @@ export function GlobalSearch() {
                         <Icon className={`h-[18px] w-[18px] shrink-0 ${styles.iconClass}`} />
                         <span className="min-w-0 flex-1">
                           <span className="flex items-center gap-2">
-                            <span className="truncate text-sm font-semibold text-slate-100">
+                            <span className="truncate text-sm font-semibold text-gray-900 dark:text-slate-100">
                               {hit.title}
                             </span>
                             <span
@@ -280,7 +283,7 @@ export function GlobalSearch() {
                             </span>
                           </span>
                           {hit.subtitle && (
-                            <span className="mt-0.5 block truncate text-xs text-slate-400">
+                            <span className="mt-0.5 block truncate text-xs text-gray-500 dark:text-slate-400">
                               {hit.subtitle}
                             </span>
                           )}

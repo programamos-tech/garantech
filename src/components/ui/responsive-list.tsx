@@ -168,3 +168,56 @@ export function FilterField({
     </div>
   );
 }
+
+export function FormPage({
+  children,
+  className,
+}: {
+  children: React.ReactNode;
+  className?: string;
+}) {
+  return <div className={cn("w-full", className)}>{children}</div>;
+}
+
+export function FormLayoutGrid({
+  children,
+  className,
+}: {
+  children: React.ReactNode;
+  className?: string;
+}) {
+  return (
+    <div
+      className={cn(
+        "grid w-full max-w-none grid-cols-1 items-start gap-6 md:grid-cols-[minmax(0,1fr)_min(280px,38%)] lg:grid-cols-[minmax(0,1fr)_min(320px,34%)] xl:grid-cols-[minmax(0,1fr)_400px]",
+        className
+      )}
+    >
+      {children}
+    </div>
+  );
+}
+
+export function FormMainColumn({
+  children,
+  className,
+}: {
+  children: React.ReactNode;
+  className?: string;
+}) {
+  return <div className={cn("min-w-0 w-full space-y-4", className)}>{children}</div>;
+}
+
+export function FormSidebarColumn({
+  children,
+  className,
+}: {
+  children: React.ReactNode;
+  className?: string;
+}) {
+  return (
+    <div className={cn("min-w-0 w-full space-y-4 md:sticky md:top-20", className)}>
+      {children}
+    </div>
+  );
+}

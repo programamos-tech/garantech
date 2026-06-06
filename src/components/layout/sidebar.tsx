@@ -39,9 +39,25 @@ export function Sidebar({ store }: { store: Store }) {
         </div>
 
         <div className="px-4 py-4">
-          <div className="rounded-xl bg-white/10 px-4 py-3 ring-1 ring-white/10">
-            <p className="text-sm font-semibold truncate">{store.name}</p>
-            <p className="text-xs text-white/50 mt-0.5 font-medium">Tienda activa</p>
+          <div className="rounded-xl bg-white/10 px-3 py-3 ring-1 ring-white/10">
+            <div className="flex items-center gap-3 min-w-0">
+              {store.logo_url ? (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img
+                  src={store.logo_url}
+                  alt={store.name}
+                  className="h-10 w-10 shrink-0 rounded-lg bg-white object-contain p-1"
+                />
+              ) : (
+                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-white text-sm font-bold text-brand">
+                  {store.name.charAt(0).toUpperCase()}
+                </div>
+              )}
+              <div className="min-w-0">
+                <p className="text-sm font-semibold truncate">{store.name}</p>
+                <p className="text-xs text-white/50 mt-0.5 font-medium">Tienda activa</p>
+              </div>
+            </div>
           </div>
         </div>
 

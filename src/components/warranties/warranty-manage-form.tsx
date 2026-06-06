@@ -9,6 +9,11 @@ import {
   DollarSign,
   Wrench,
 } from "lucide-react";
+import {
+  FormLayoutGrid,
+  FormMainColumn,
+  FormSidebarColumn,
+} from "@/components/ui/responsive-list";
 import { Button } from "@/components/ui/button";
 import { StatusBadge } from "@/components/ui/status-badge";
 import { openOrResumeClaim } from "@/lib/actions/claims";
@@ -155,8 +160,8 @@ export function WarrantyManageForm({ context }: { context: WarrantyManageContext
         </div>
       ) : (
         <form onSubmit={handleSubmit}>
-          <div className="grid grid-cols-1 lg:grid-cols-[1fr_320px] gap-6 items-start">
-            <div className="space-y-4">
+          <FormLayoutGrid>
+            <FormMainColumn>
               <section className="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm">
                 <SectionTitle required>Venta</SectionTitle>
                 <div className="mt-4 rounded-xl border border-gray-200 bg-gray-50 px-4 py-3 dark:border-gray-700 dark:bg-gray-800/50">
@@ -250,9 +255,9 @@ export function WarrantyManageForm({ context }: { context: WarrantyManageContext
                   className="w-full rounded-xl border border-gray-200 px-3.5 py-2.5 text-sm focus:border-brand focus:outline-none focus:ring-2 focus:ring-brand/10 resize-none dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100 dark:placeholder:text-gray-500"
                 />
               </section>
-            </div>
+            </FormMainColumn>
 
-            <div className="space-y-4 lg:sticky lg:top-20">
+            <FormSidebarColumn>
               <section className="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm">
                 <SectionTitle required>Tipo de gestión</SectionTitle>
                 <div className="mt-4 grid grid-cols-1 gap-2">
@@ -331,8 +336,8 @@ export function WarrantyManageForm({ context }: { context: WarrantyManageContext
                       : "Iniciar gestión"}
                 </Button>
               </section>
-            </div>
-          </div>
+            </FormSidebarColumn>
+          </FormLayoutGrid>
         </form>
       )}
     </>

@@ -6,6 +6,11 @@ import { useRouter } from "next/navigation";
 import { ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { CustomerFields } from "@/components/customers/customer-fields";
+import {
+  FormLayoutGrid,
+  FormMainColumn,
+  FormSidebarColumn,
+} from "@/components/ui/responsive-list";
 import { createCustomer } from "@/lib/actions/customers";
 import { validateCustomerFields } from "@/lib/customer";
 
@@ -96,30 +101,29 @@ export function CustomerForm() {
         </Link>
       </div>
 
-      <form onSubmit={handleSubmit}>
-        <div className="grid grid-cols-1 lg:grid-cols-[1fr_320px] gap-6 items-start">
-          {/* Columna izquierda */}
-          <section className="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm dark:border-gray-800 dark:bg-gray-900">
+      <form onSubmit={handleSubmit} className="w-full">
+        <FormLayoutGrid>
+          <FormMainColumn className="space-y-0">
+          <section className="w-full rounded-2xl border border-gray-200 bg-white p-5 shadow-sm dark:border-gray-800 dark:bg-gray-900">
             <div className="mb-5">
               <SectionTitle required>Datos personales</SectionTitle>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-4 gap-y-5">
-              <CustomerFields
-                name={name}
-                documentNumber={documentNumber}
-                phone={phone}
-                email={email}
-                onNameChange={setName}
-                onDocumentNumberChange={setDocumentNumber}
-                onPhoneChange={setPhone}
-                onEmailChange={setEmail}
-              />
-            </div>
+            <CustomerFields
+              name={name}
+              documentNumber={documentNumber}
+              phone={phone}
+              email={email}
+              onNameChange={setName}
+              onDocumentNumberChange={setDocumentNumber}
+              onPhoneChange={setPhone}
+              onEmailChange={setEmail}
+            />
           </section>
+          </FormMainColumn>
 
-          {/* Columna derecha — resumen */}
-          <section className="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm lg:sticky lg:top-20 dark:border-gray-800 dark:bg-gray-900">
+          <FormSidebarColumn className="space-y-0">
+          <section className="w-full rounded-2xl border border-gray-200 bg-white p-5 shadow-sm dark:border-gray-800 dark:bg-gray-900">
             <div className="mb-4">
               <SectionTitle>Resumen</SectionTitle>
             </div>
@@ -160,7 +164,8 @@ export function CustomerForm() {
               {isPending ? "Creando..." : "Crear cliente"}
             </Button>
           </section>
-        </div>
+          </FormSidebarColumn>
+        </FormLayoutGrid>
       </form>
     </>
   );

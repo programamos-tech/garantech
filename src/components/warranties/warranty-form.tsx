@@ -6,6 +6,11 @@ import { useRouter } from "next/navigation";
 import { ArrowLeft, Plus, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { DatePicker, todayIso } from "@/components/ui/date-picker";
+import {
+  FormLayoutGrid,
+  FormMainColumn,
+  FormSidebarColumn,
+} from "@/components/ui/responsive-list";
 import { createSaleWithWarranties } from "@/lib/actions/warranties";
 import { CustomerFormModal } from "@/components/customers/customer-form-modal";
 import { ProductFormModal } from "@/components/products/product-form-modal";
@@ -136,6 +141,7 @@ function ProductLineEditor({
         )}
       </div>
 
+      <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
       <div>
         <div className="flex items-center justify-between mb-2">
           <FieldLabel>Producto</FieldLabel>
@@ -223,6 +229,7 @@ function ProductLineEditor({
           }
           className={`${fieldInputClass} disabled:bg-gray-100 disabled:text-gray-400 dark:disabled:bg-gray-800 dark:disabled:text-gray-500`}
         />
+      </div>
       </div>
 
       {selectedProduct && line.identifier.trim() && previewEndDate && (
@@ -399,9 +406,9 @@ export function WarrantyForm({
         </Link>
       </div>
 
-      <form id="warranty-form" onSubmit={handleSubmit}>
-        <div className="grid grid-cols-1 lg:grid-cols-[1fr_320px] gap-6 items-start">
-          <div className="space-y-4">
+      <form id="warranty-form" onSubmit={handleSubmit} className="w-full">
+        <FormLayoutGrid>
+          <FormMainColumn>
             <section className="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm dark:border-gray-800 dark:bg-gray-900">
               <div className="flex items-center justify-between mb-4">
                 <SectionTitle required>Cliente</SectionTitle>
@@ -525,9 +532,9 @@ export function WarrantyForm({
                 />
               ))}
             </section>
-          </div>
+          </FormMainColumn>
 
-          <div className="space-y-4 lg:sticky lg:top-20">
+          <FormSidebarColumn>
             <section className="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm dark:border-gray-800 dark:bg-gray-900">
               <div className="mb-4">
                 <SectionTitle>Notas</SectionTitle>
@@ -614,8 +621,8 @@ export function WarrantyForm({
                     : `Confirmar garantías (${lineItems.length} productos)`}
               </Button>
             </section>
-          </div>
-        </div>
+          </FormSidebarColumn>
+        </FormLayoutGrid>
       </form>
 
       <CustomerFormModal
