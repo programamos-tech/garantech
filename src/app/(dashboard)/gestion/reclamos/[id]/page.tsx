@@ -20,12 +20,10 @@ export default async function ReclamoDetailPage({
   ]);
 
   return (
-    <div className="max-w-6xl">
-      <ClaimDetailView
-        claim={claim}
-        storeName={store?.name ?? "Tu tienda"}
-        sale={detail?.sale ?? null}
-      />
-    </div>
+    <ClaimDetailView
+      claim={claim}
+      storeName={store?.name ?? "Tu tienda"}
+      sale={detail?.sale ?? null}
+    />
   );
 }

@@ -25,9 +25,9 @@ export function Sidebar({ store }: { store: Store }) {
   const pathname = usePathname();
 
   return (
-    <aside className="hidden lg:flex lg:w-64 lg:flex-col lg:fixed lg:inset-y-0 bg-brand text-white z-40">
-      <div className="flex flex-col h-full">
-        <div className="px-3 py-3 border-b border-white/10">
+    <aside className="dashboard-sidebar hidden md:flex md:w-64 md:flex-col md:sticky md:top-0 md:h-dvh md:max-h-dvh md:shrink-0 md:self-start bg-brand text-white z-40 print:hidden">
+      <div className="flex h-full min-h-0 flex-col">
+        <div className="shrink-0 px-3 py-3 border-b border-white/10">
           <Image
             src="/garantech Logo.png"
             alt="GaranTech"
@@ -41,7 +41,7 @@ export function Sidebar({ store }: { store: Store }) {
           </p>
         </div>
 
-        <div className="px-4 py-4">
+        <div className="shrink-0 px-4 py-4">
           <div className="rounded-xl bg-white/10 px-3 py-3 ring-1 ring-white/10">
             <div className="flex items-center gap-3 min-w-0">
               {store.logo_url ? (
@@ -64,7 +64,7 @@ export function Sidebar({ store }: { store: Store }) {
           </div>
         </div>
 
-        <nav className="flex-1 px-3 space-y-1">
+        <nav className="flex-1 min-h-0 overflow-y-auto overscroll-y-contain px-3 space-y-1">
           {navItems.map(({ href, label, icon: Icon }) => {
             const active = pathname === href || pathname.startsWith(href + "/");
             return (
@@ -97,7 +97,7 @@ export function Sidebar({ store }: { store: Store }) {
           </Link>
         </nav>
 
-        <div className="p-4 border-t border-white/10">
+        <div className="shrink-0 p-4 border-t border-white/10">
           <form action={signOut}>
             <button
               type="submit"
@@ -118,7 +118,7 @@ export function MobileNav() {
 
   return (
     <nav
-      className="fixed bottom-0 inset-x-0 z-40 border-t border-white/10 bg-brand lg:hidden min-h-[var(--mobile-nav-height)] pb-[env(safe-area-inset-bottom,0px)]"
+      className="fixed bottom-0 inset-x-0 z-40 border-t border-white/10 bg-brand md:hidden min-h-[var(--mobile-nav-height)] pb-[env(safe-area-inset-bottom,0px)] print:hidden"
       aria-label="Navegación principal"
     >
       <div className="flex items-stretch justify-around py-1.5">

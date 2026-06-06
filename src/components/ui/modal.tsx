@@ -32,7 +32,7 @@ export function Modal({ open, onClose, title, children, wide }: ModalProps) {
         onClick={onClose}
         aria-hidden
       />
-      <div className="absolute inset-0 lg:left-64 flex items-end justify-center sm:items-center p-3 sm:p-4 pointer-events-none">
+      <div className="absolute inset-0 md:left-64 flex items-end justify-center sm:items-center p-3 sm:p-4 pointer-events-none">
         <div
           className={`relative z-10 w-full max-h-[90vh] overflow-y-auto rounded-t-2xl bg-white shadow-2xl shadow-brand/15 sm:rounded-2xl pointer-events-auto dark:border dark:border-gray-700 dark:shadow-black/50 ${
             wide ? "sm:max-w-2xl" : "sm:max-w-lg"

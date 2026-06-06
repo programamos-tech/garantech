@@ -19,14 +19,12 @@ export default async function GarantiaDetailPage({
   if (!detail) notFound();
 
   return (
-    <div className="max-w-6xl">
-      <WarrantyDetailView
-        warranty={detail.warranty}
-        storeName={store?.name ?? "Tu tienda"}
-        openClaimId={openClaimId}
-        sale={detail.sale}
-        saleItems={detail.saleItems}
-      />
-    </div>
+    <WarrantyDetailView
+      warranty={detail.warranty}
+      storeName={store?.name ?? "Tu tienda"}
+      openClaimId={openClaimId}
+      sale={detail.sale}
+      saleItems={detail.saleItems}
+    />
   );
 }

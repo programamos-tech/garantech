@@ -19,7 +19,7 @@ export default async function GarantiaCertificadoPage({
   const saleNotes = detail.sale?.notes ?? detail.warranty.notes;
 
   return (
-    <div className="space-y-6 max-w-4xl print:space-y-0">
+    <div className="certificate-page mx-auto w-full max-w-3xl space-y-6 print:max-w-none print:space-y-0">
       <div className="flex flex-wrap items-center justify-between gap-3 print:hidden">
         <Link
           href={`/garantias/${id}`}
@@ -31,11 +31,13 @@ export default async function GarantiaCertificadoPage({
         <PrintButton />
       </div>
 
-      <WarrantyCertificateDocument
-        store={store}
-        warranty={detail.warranty}
-        saleNotes={saleNotes}
-      />
+      <div className="certificate-page__frame rounded-2xl border border-gray-200 bg-gray-100/80 p-4 sm:p-6 dark:border-gray-700 dark:bg-gray-950/50 print:border-0 print:bg-white print:p-0">
+        <WarrantyCertificateDocument
+          store={store}
+          warranty={detail.warranty}
+          saleNotes={saleNotes}
+        />
+      </div>
     </div>
   );
 }

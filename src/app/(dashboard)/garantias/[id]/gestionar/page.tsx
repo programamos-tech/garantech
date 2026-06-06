@@ -33,9 +33,5 @@ export default async function GestionarGarantiaPage({
     redirect(`/garantias/${id}`);
   }
 
-  return (
-    <div className="max-w-6xl">
-      <WarrantyManageForm context={context} />
-    </div>
-  );
+  return <WarrantyManageForm context={context} />;
 }

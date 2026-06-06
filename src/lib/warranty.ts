@@ -97,6 +97,22 @@ export function formatDateTimeDetail(iso: string): string {
   return `${day} · ${time}`;
 }
 
+export function formatCertificateIssuedAt(iso: string): { date: string; time: string } {
+  const date = new Date(iso);
+  return {
+    date: date.toLocaleDateString("es-CO", {
+      day: "2-digit",
+      month: "short",
+      year: "numeric",
+    }),
+    time: date.toLocaleTimeString("es-CO", {
+      hour: "numeric",
+      minute: "2-digit",
+      hour12: true,
+    }),
+  };
+}
+
 export function shortWarrantyId(id: string): string {
   return `#${id.replace(/-/g, "").slice(0, 8).toUpperCase()}`;
 }
