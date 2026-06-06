@@ -10,11 +10,8 @@ import type {
   WarrantyWithRelations,
 } from "@/lib/types";
 import {
-  calculateWarrantyEndDate,
-  calculateWarrantyStatus,
   shortSaleId,
   shortWarrantyId,
-  validateIdentifier,
   withRecalculatedStatus,
 } from "@/lib/warranty";
 
@@ -25,15 +22,20 @@ function enrichWarranty(w: Record<string, unknown>): WarrantyWithRelations {
   return warranty;
 }
 
+function mapCreateSaleError(message: string): string {
+  if (message.includes("idx_warranties_store_identifier_active")) {
+    return "Ya existe una garantía activa con ese identificador";
+  }
+
+  return message;
+}
+
 export async function createSaleWithWarranties(input: {
   customerId: string;
   saleDate: string;
   notes: string | null;
   items: SaleWarrantyItem[];
 }) {
-  const storeId = await getStoreId();
-  if (!storeId) return { error: "No autorizado" };
-
   const { customerId, saleDate, notes, items } = input;
 
   if (!customerId) return { error: "Selecciona un cliente" };
@@ -52,74 +54,23 @@ export async function createSaleWithWarranties(input: {
 
   const supabase = await createClient();
 
-  const productIds = [...new Set(items.map((i) => i.productId))];
-  const { data: products } = await supabase
-    .from("products")
-    .select("*")
-    .eq("store_id", storeId)
-    .in("id", productIds);
-
-  if (!products || products.length !== productIds.length) {
-    return { error: "Uno o más productos no fueron encontrados" };
-  }
-
-  const productById = new Map(products.map((p) => [p.id, p]));
-
-  const warrantyRows: Record<string, unknown>[] = [];
-
-  for (const item of items) {
-    const product = productById.get(item.productId);
-    if (!product) return { error: "Producto no encontrado" };
-
-    const identifierError = validateIdentifier(item.identifier, product.category);
-    if (identifierError) {
-      return { error: `${product.name}: ${identifierError}` };
-    }
-
-    const warrantyEndDate = calculateWarrantyEndDate(
-      saleDate,
-      product.warranty_months
-    );
-    const status = calculateWarrantyStatus(warrantyEndDate);
-    const identifierType =
-      product.category === "telefonia" ? "imei" : "referencia";
-
-    warrantyRows.push({
-      store_id: storeId,
-      customer_id: customerId,
+  const { data, error } = await supabase.rpc("create_sale_with_warranties", {
+    p_customer_id: customerId,
+    p_sale_date: saleDate,
+    p_notes: notes?.trim() || null,
+    p_items: items.map((item) => ({
       product_id: item.productId,
-      sale_date: saleDate,
-      warranty_end_date: warrantyEndDate,
       identifier: item.identifier.trim(),
-      identifier_type: identifierType,
-      status,
-      notes: null,
-    });
+    })),
+  });
+
+  if (error) {
+    return { error: mapCreateSaleError(error.message) };
   }
 
-  const { data: sale, error: saleError } = await supabase
-    .from("sales")
-    .insert({
-      store_id: storeId,
-      customer_id: customerId,
-      sale_date: saleDate,
-      notes: notes?.trim() || null,
-    })
-    .select("id")
-    .single();
-
-  if (saleError || !sale) {
-    return { error: saleError?.message ?? "No se pudo registrar la venta" };
-  }
-
-  const { data: createdWarranties, error: warrantyError } = await supabase
-    .from("warranties")
-    .insert(warrantyRows.map((row) => ({ ...row, sale_id: sale.id })))
-    .select("id");
-
-  if (warrantyError || !createdWarranties?.length) {
-    await supabase.from("sales").delete().eq("id", sale.id);
-    return { error: warrantyError?.message ?? "No se pudieron registrar las garantías" };
+  const result = data as { sale_id?: string; warranty_ids?: string[] } | null;
+  if (!result?.sale_id || !result.warranty_ids?.length) {
+    return { error: "No se pudieron registrar las garantías" };
   }
 
   revalidatePath("/garantias");
@@ -129,8 +80,8 @@ export async function createSaleWithWarranties(input: {
 
   return {
     success: true,
-    saleId: sale.id,
-    warrantyIds: createdWarranties.map((w) => w.id),
+    saleId: result.sale_id,
+    warrantyIds: result.warranty_ids,
   };
 }
 

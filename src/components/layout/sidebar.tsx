@@ -37,7 +37,7 @@ export function Sidebar({ store }: { store: Store }) {
             priority
           />
           <p className="mt-3 px-2 text-center text-xs font-medium leading-relaxed text-white/55">
-            Gestiona garantías y postventa de tu tienda
+            Gestiona la postventa de tu tienda
           </p>
         </div>
 
