@@ -52,7 +52,10 @@ Edita `.env.local` con tus credenciales:
 ```
 NEXT_PUBLIC_SUPABASE_URL=https://tu-proyecto.supabase.co
 NEXT_PUBLIC_SUPABASE_ANON_KEY=tu-anon-key
+SUPABASE_SERVICE_ROLE_KEY=tu-service-role-key
 ```
+
+`SUPABASE_SERVICE_ROLE_KEY` es solo para el servidor (Vercel); no uses el prefijo `NEXT_PUBLIC_`.
 
 ### 3. Ejecutar
 
