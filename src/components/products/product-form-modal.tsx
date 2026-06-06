@@ -21,6 +21,7 @@ interface ProductFormModalProps {
   onSuccess?: (product: Product, identifier?: string) => void;
   product?: Product | null;
   forWarranty?: boolean;
+  revalidate?: boolean;
 }
 
 export function ProductFormModal({
@@ -29,6 +30,7 @@ export function ProductFormModal({
   onSuccess,
   product,
   forWarranty = false,
+  revalidate = true,
 }: ProductFormModalProps) {
   const isEditing = !!product;
   const [error, setError] = useState("");
@@ -65,7 +67,7 @@ export function ProductFormModal({
     startTransition(async () => {
       const result = isEditing
         ? await updateProduct(product.id, formData)
-        : await createProduct(formData);
+        : await createProduct(formData, { revalidate });
 
       if (result.error) {
         setError(result.error);

@@ -12,12 +12,14 @@ interface CustomerFormModalProps {
   open: boolean;
   onClose: () => void;
   onSuccess?: (customer: Customer) => void;
+  revalidate?: boolean;
 }
 
 export function CustomerFormModal({
   open,
   onClose,
   onSuccess,
+  revalidate = true,
 }: CustomerFormModalProps) {
   const [name, setName] = useState("");
   const [documentNumber, setDocumentNumber] = useState("");
@@ -61,7 +63,7 @@ export function CustomerFormModal({
     formData.set("email", email.trim());
 
     startTransition(async () => {
-      const result = await createCustomer(formData);
+      const result = await createCustomer(formData, { revalidate });
       if (result.error) {
         setError(result.error);
       } else if (result.customer) {

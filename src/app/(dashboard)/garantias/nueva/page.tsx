@@ -1,14 +1,14 @@
-import { getCustomers } from "@/lib/actions/customers";
-import { getProducts } from "@/lib/actions/products";
+import { Suspense } from "react";
 import { FormPage } from "@/components/ui/responsive-list";
-import { WarrantyForm } from "@/components/warranties/warranty-form";
+import { WarrantyFormLoader } from "@/components/warranties/warranty-form-loader";
+import { WarrantyFormSkeleton } from "@/components/warranties/warranty-form-skeleton";
 
-export default async function NuevaGarantiaPage() {
-  const [customers, products] = await Promise.all([getCustomers(), getProducts()]);
-
+export default function NuevaGarantiaPage() {
   return (
     <FormPage>
-      <WarrantyForm customers={customers} products={products} />
+      <Suspense fallback={<WarrantyFormSkeleton />}>
+        <WarrantyFormLoader />
+      </Suspense>
     </FormPage>
   );
 }

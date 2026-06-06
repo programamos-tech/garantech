@@ -5,7 +5,14 @@ import { createClient } from "@/lib/supabase/server";
 import { getStoreId } from "@/lib/store";
 import { normalizeCustomerFields, validateCustomerFields } from "@/lib/customer";
 
-export async function createCustomer(formData: FormData) {
+type MutationOptions = {
+  revalidate?: boolean;
+};
+
+export async function createCustomer(
+  formData: FormData,
+  options?: MutationOptions
+) {
   const storeId = await getStoreId();
   if (!storeId) return { error: "No autorizado" };
 
@@ -35,11 +42,10 @@ export async function createCustomer(formData: FormData) {
 
   if (error) return { error: error.message };
 
-  revalidatePath("/clientes");
-  revalidatePath("/clientes/nuevo");
-  revalidatePath("/clientes", "layout");
-  revalidatePath("/garantias");
-  revalidatePath("/garantias/nueva");
+  if (options?.revalidate !== false) {
+    revalidatePath("/clientes");
+  }
+
   return { success: true, customer: data };
 }
 

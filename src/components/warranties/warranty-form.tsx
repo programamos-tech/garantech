@@ -310,7 +310,6 @@ export function WarrantyForm({
     setCustomerId(customer.id);
     setCustomerSearch("");
     setShowCustomerModal(false);
-    router.refresh();
   }
 
   function handleProductCreated(product: Product, productIdentifier?: string) {
@@ -326,7 +325,6 @@ export function WarrantyForm({
     }
     setShowProductModal(false);
     setActiveLineKey(null);
-    router.refresh();
   }
 
   const completedLines = lineItems.filter(
@@ -378,10 +376,8 @@ export function WarrantyForm({
         setError(result.error);
       } else if (result.warrantyIds?.length === 1) {
         router.push(`/garantias/${result.warrantyIds[0]}`);
-        router.refresh();
       } else {
         router.push("/garantias");
-        router.refresh();
       }
     });
   }
@@ -629,6 +625,7 @@ export function WarrantyForm({
         open={showCustomerModal}
         onClose={() => setShowCustomerModal(false)}
         onSuccess={handleCustomerCreated}
+        revalidate={false}
       />
       <ProductFormModal
         open={showProductModal}
@@ -638,6 +635,7 @@ export function WarrantyForm({
         }}
         onSuccess={handleProductCreated}
         forWarranty
+        revalidate={false}
       />
     </>
   );

@@ -5,7 +5,14 @@ import { createClient } from "@/lib/supabase/server";
 import { getStoreId } from "@/lib/store";
 import type { ProductCategory, Product } from "@/lib/types";
 
-export async function createProduct(formData: FormData) {
+type MutationOptions = {
+  revalidate?: boolean;
+};
+
+export async function createProduct(
+  formData: FormData,
+  options?: MutationOptions
+) {
   const storeId = await getStoreId();
   if (!storeId) return { error: "No autorizado" };
 
@@ -24,9 +31,10 @@ export async function createProduct(formData: FormData) {
 
   if (error) return { error: error.message };
 
-  revalidatePath("/productos");
-  revalidatePath("/garantias");
-  revalidatePath("/garantias/nueva");
+  if (options?.revalidate !== false) {
+    revalidatePath("/productos");
+  }
+
   return { success: true as const, product: data as Product };
 }
 

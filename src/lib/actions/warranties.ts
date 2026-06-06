@@ -4,6 +4,8 @@ import { revalidatePath } from "next/cache";
 import { createClient } from "@/lib/supabase/server";
 import { getStoreId } from "@/lib/store";
 import type {
+  Customer,
+  Product,
   SaleWarrantyItem,
   WarrantyDetailData,
   WarrantyStatus,
@@ -28,6 +30,28 @@ function mapCreateSaleError(message: string): string {
   }
 
   return message;
+}
+
+export async function getWarrantyFormCatalog(): Promise<{
+  customers: Customer[];
+  products: Product[];
+}> {
+  const supabase = await createClient();
+  const { data, error } = await supabase.rpc("get_warranty_form_catalog");
+
+  if (error || !data) {
+    return { customers: [], products: [] };
+  }
+
+  const catalog = data as {
+    customers?: Customer[];
+    products?: Product[];
+  };
+
+  return {
+    customers: catalog.customers ?? [],
+    products: catalog.products ?? [],
+  };
 }
 
 export async function createSaleWithWarranties(input: {
