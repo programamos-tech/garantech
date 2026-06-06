@@ -1,7 +1,7 @@
 "use server";
 
-import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
+import { createAdminClient } from "@/lib/supabase/admin";
 import { createClient } from "@/lib/supabase/server";
 
 export async function signIn(formData: FormData) {
@@ -45,7 +45,33 @@ export async function signUp(formData: FormData) {
     return { error: "No se pudo crear la cuenta" };
   }
 
-  const { error: storeError } = await supabase.from("stores").insert({
+  let admin;
+  try {
+    admin = createAdminClient();
+  } catch {
+    return {
+      error:
+        "Configuración incompleta en el servidor. Falta SUPABASE_SERVICE_ROLE_KEY.",
+    };
+  }
+
+  const { data: existingStore } = await admin
+    .from("stores")
+    .select("id")
+    .eq("owner_id", authData.user.id)
+    .maybeSingle();
+
+  if (existingStore) {
+    if (authData.session) {
+      redirect("/garantias");
+    }
+    return {
+      error:
+        "La cuenta ya existe. Revisa tu correo para confirmar el registro o inicia sesión.",
+    };
+  }
+
+  const { error: storeError } = await admin.from("stores").insert({
     owner_id: authData.user.id,
     name: storeName,
     nit,
@@ -53,7 +79,15 @@ export async function signUp(formData: FormData) {
   });
 
   if (storeError) {
+    await admin.auth.admin.deleteUser(authData.user.id);
     return { error: "Error al registrar la tienda: " + storeError.message };
+  }
+
+  if (!authData.session) {
+    return {
+      error:
+        "Cuenta creada. Revisa tu correo para confirmar el registro e inicia sesión.",
+    };
   }
 
   redirect("/garantias");
