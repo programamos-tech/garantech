@@ -213,9 +213,8 @@ body {
 }
 
 .dashboard-sidebar {
-  -webkit-transform: translateZ(0);
-  transform: translateZ(0);
-  backface-visibility: hidden;
+  height: 100dvh;
+  max-height: 100dvh;
 }
 
 @media print {

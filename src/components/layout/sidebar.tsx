@@ -8,11 +8,17 @@ import {
   Package,
   ShieldCheck,
   ClipboardList,
-  LogOut,
+  MessageCircle,
   Settings,
 } from "lucide-react";
 import type { Store } from "@/lib/types";
-import { signOut } from "@/lib/actions/auth";
+
+const SUPPORT_WHATSAPP = "573152802343";
+
+function getSupportWhatsAppUrl(storeName: string): string {
+  const message = `Hola, vengo de GaranTech. Cuenta: ${storeName}. Necesito ayuda con: `;
+  return `https://wa.me/${SUPPORT_WHATSAPP}?text=${encodeURIComponent(message)}`;
+}
 
 const navItems = [
   { href: "/garantias", label: "Garantías", icon: ShieldCheck },
@@ -25,7 +31,7 @@ export function Sidebar({ store }: { store: Store }) {
   const pathname = usePathname();
 
   return (
-    <aside className="dashboard-sidebar hidden md:flex md:w-64 md:flex-col md:sticky md:top-0 md:h-dvh md:max-h-dvh md:shrink-0 md:self-start bg-brand text-white z-40 print:hidden">
+    <aside className="dashboard-sidebar hidden md:fixed md:inset-y-0 md:left-0 md:z-40 md:flex md:h-dvh md:max-h-dvh md:w-64 md:flex-col bg-brand text-white print:hidden">
       <div className="flex h-full min-h-0 flex-col">
         <div className="shrink-0 px-3 py-3 border-b border-white/10">
           <Image
@@ -97,16 +103,19 @@ export function Sidebar({ store }: { store: Store }) {
           </Link>
         </nav>
 
-        <div className="shrink-0 p-4 border-t border-white/10">
-          <form action={signOut}>
-            <button
-              type="submit"
-              className="flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-semibold text-white/50 hover:bg-white/10 hover:text-white transition-all duration-150"
-            >
-              <LogOut className="h-5 w-5" />
-              Cerrar sesión
-            </button>
-          </form>
+        <div className="shrink-0 border-t border-white/10 p-4">
+          <a
+            href={getSupportWhatsAppUrl(store.name)}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="block rounded-xl px-3 py-2.5 transition-all duration-150 hover:bg-white/10"
+          >
+            <p className="text-xs font-medium text-white/50">¿Necesitas soporte?</p>
+            <p className="mt-1 flex items-center gap-2 text-sm font-semibold text-white/80 hover:text-white">
+              <MessageCircle className="h-4 w-4 shrink-0" />
+              Contáctame
+            </p>
+          </a>
         </div>
       </div>
     </aside>
