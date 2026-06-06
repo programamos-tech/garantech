@@ -1,26 +1,165 @@
 @import "tailwindcss";
 
+@custom-variant dark (&:where(.dark, .dark *));
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #f4f5f9;
+  --foreground: #1a1c3a;
+  --surface: #ffffff;
+  --surface-muted: #f9fafb;
+  --border: #e5e7eb;
+  --border-subtle: #f3f4f6;
+  --text-primary: #111827;
+  --text-secondary: #6b7280;
+  --text-muted: #9ca3af;
+  --brand: #212355;
+  --brand-hover: #2d3068;
+  --brand-light: #eef0f8;
+  --brand-muted: rgba(33, 35, 85, 0.08);
+  --brand-ring: rgba(33, 35, 85, 0.18);
+}
+
+.dark {
+  --background: #0b0d14;
+  --foreground: #e5e7eb;
+  --surface: #141824;
+  --surface-muted: #1a2030;
+  --border: #2a3145;
+  --border-subtle: #1f2535;
+  --text-primary: #f3f4f6;
+  --text-secondary: #cbd5e1;
+  --text-muted: #94a3b8;
+  --brand-light: #2d3560;
+  --brand-muted: rgba(255, 255, 255, 0.06);
+  --brand-ring: rgba(148, 163, 255, 0.22);
+  color-scheme: dark;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --color-surface: var(--surface);
+  --color-surface-muted: var(--surface-muted);
+  --color-border-default: var(--border);
+  --color-brand: var(--brand);
+  --color-brand-hover: var(--brand-hover);
+  --color-brand-light: var(--brand-light);
+  --font-sans: var(--font-jakarta);
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-jakarta), system-ui, sans-serif;
+}
+
+/* Focus rings con color de marca */
+.focus-brand:focus {
+  border-color: var(--brand);
+  outline: none;
+  box-shadow: 0 0 0 3px var(--brand-ring);
+}
+
+/* Selección en listas */
+.selected-item {
+  background-color: var(--brand-light);
+  color: var(--brand);
+}
+
+/* Links de marca */
+.link-brand {
+  color: var(--brand);
+  font-weight: 600;
+  transition: opacity 0.15s;
+}
+
+.link-brand:hover {
+  opacity: 0.8;
+}
+
+.dark .link-brand {
+  color: #a5b4fc;
+}
+
+/* Compatibilidad dark para utilidades existentes */
+.dark .bg-white {
+  background-color: var(--surface);
+}
+
+/* Sidebar: ítem activo siempre blanco con texto marca */
+.dark aside .bg-white {
+  background-color: #ffffff;
+}
+
+.dark aside .text-brand {
+  color: var(--brand);
+}
+
+/* Iconos en cajas de marca */
+.dark .bg-brand-light {
+  background-color: rgba(99, 102, 241, 0.16);
+}
+
+.dark .bg-brand-light.text-brand,
+.dark .text-brand.bg-brand-light {
+  color: #c7d2fe;
+}
+
+.dark .bg-gray-50,
+.dark .bg-gray-50\/30,
+.dark .bg-gray-50\/50,
+.dark .bg-gray-50\/80 {
+  background-color: var(--surface-muted);
+}
+
+.dark .border-gray-50,
+.dark .border-gray-100,
+.dark .border-gray-200,
+.dark .border-gray-200\/80 {
+  border-color: var(--border);
+}
+
+.dark .text-gray-900 {
+  color: var(--text-primary);
+}
+
+.dark .text-gray-700,
+.dark .text-gray-600 {
+  color: var(--text-secondary);
+}
+
+.dark .text-gray-500,
+.dark .text-gray-400 {
+  color: var(--text-muted);
+}
+
+.dark svg.text-gray-400,
+.dark .relative > .text-gray-400 {
+  color: #94a3b8;
+}
+
+.dark .hover\:bg-gray-50:hover,
+.dark .hover\:bg-gray-100:hover {
+  background-color: var(--surface-muted);
+}
+
+.dark .placeholder\:text-gray-400::placeholder {
+  color: var(--text-muted);
+}
+
+.dark .shadow-sm {
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.35);
+}
+
+.dark .shadow-\[0_-4px_20px_rgba\(33\,35\,85\,0\.08\)\] {
+  box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.45);
+}
+
+/* Iconos de acción (ojo, etc.) */
+.dark .text-gray-400:where(.inline-flex, button, a) {
+  color: #94a3b8;
+}
+
+.dark .text-gray-400:where(.inline-flex, button, a):hover {
+  color: #c7d2fe;
 }
