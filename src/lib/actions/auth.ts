@@ -4,6 +4,15 @@ import { redirect } from "next/navigation";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { createClient } from "@/lib/supabase/server";
 
+function isDuplicateUserError(message: string) {
+  const normalized = message.toLowerCase();
+  return (
+    normalized.includes("already") ||
+    normalized.includes("registered") ||
+    normalized.includes("exists")
+  );
+}
+
 export async function signIn(formData: FormData) {
   const supabase = await createClient();
 
@@ -32,19 +41,6 @@ export async function signUp(formData: FormData) {
     return { error: "Todos los campos obligatorios deben completarse" };
   }
 
-  const { data: authData, error: authError } = await supabase.auth.signUp({
-    email,
-    password,
-  });
-
-  if (authError) {
-    return { error: authError.message };
-  }
-
-  if (!authData.user) {
-    return { error: "No se pudo crear la cuenta" };
-  }
-
   let admin;
   try {
     admin = createAdminClient();
@@ -55,38 +51,43 @@ export async function signUp(formData: FormData) {
     };
   }
 
-  const { data: existingStore } = await admin
-    .from("stores")
-    .select("id")
-    .eq("owner_id", authData.user.id)
-    .maybeSingle();
+  const { data: userData, error: createUserError } = await admin.auth.admin.createUser({
+    email,
+    password,
+    email_confirm: true,
+  });
 
-  if (existingStore) {
-    if (authData.session) {
-      redirect("/garantias");
+  if (createUserError) {
+    if (isDuplicateUserError(createUserError.message)) {
+      return { error: "Ya existe una cuenta con ese correo. Inicia sesión." };
     }
-    return {
-      error:
-        "La cuenta ya existe. Revisa tu correo para confirmar el registro o inicia sesión.",
-    };
+    return { error: createUserError.message };
+  }
+
+  if (!userData.user) {
+    return { error: "No se pudo crear la cuenta" };
   }
 
   const { error: storeError } = await admin.from("stores").insert({
-    owner_id: authData.user.id,
+    owner_id: userData.user.id,
     name: storeName,
     nit,
     phone: phone || null,
   });
 
   if (storeError) {
-    await admin.auth.admin.deleteUser(authData.user.id);
+    await admin.auth.admin.deleteUser(userData.user.id);
     return { error: "Error al registrar la tienda: " + storeError.message };
   }
 
-  if (!authData.session) {
+  const { error: signInError } = await supabase.auth.signInWithPassword({
+    email,
+    password,
+  });
+
+  if (signInError) {
     return {
-      error:
-        "Cuenta creada. Revisa tu correo para confirmar el registro e inicia sesión.",
+      error: "Cuenta creada. Inicia sesión con tu correo y contraseña.",
     };
   }
 
