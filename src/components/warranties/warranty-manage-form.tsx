@@ -40,7 +40,7 @@ function SectionTitle({
   required?: boolean;
 }) {
   return (
-    <h2 className="text-[11px] font-semibold uppercase tracking-wide text-gray-500">
+    <h2 className="text-[11px] font-semibold uppercase tracking-wide text-gray-500 dark:text-gray-400">
       {children}
       {required && <span className="text-red-500"> *</span>}
     </h2>
@@ -50,8 +50,8 @@ function SectionTitle({
 function SummaryRow({ label, value }: { label: string; value: React.ReactNode }) {
   return (
     <div className="flex items-start justify-between gap-4 py-2 text-sm">
-      <span className="text-gray-500 shrink-0">{label}</span>
-      <span className="font-medium text-gray-900 text-right">{value || "—"}</span>
+      <span className="text-gray-500 shrink-0 dark:text-gray-400">{label}</span>
+      <span className="font-medium text-gray-900 text-right dark:text-gray-100">{value || "—"}</span>
     </div>
   );
 }
@@ -120,9 +120,9 @@ export function WarrantyManageForm({ context }: { context: WarrantyManageContext
 
   return (
     <>
-      <div className="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm mb-6 flex items-start justify-between gap-4">
+      <div className="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm mb-6 flex items-start justify-between gap-4 dark:border-gray-800">
         <div>
-          <p className="text-sm text-gray-500">
+          <p className="text-sm text-gray-500 dark:text-gray-400">
             Garantías /{" "}
             <Link
               href={`/garantias/${context.defaultWarrantyId}`}
@@ -132,14 +132,14 @@ export function WarrantyManageForm({ context }: { context: WarrantyManageContext
             </Link>{" "}
             / Gestionar
           </p>
-          <h1 className="text-2xl font-bold text-gray-900 mt-1">Gestionar garantía</h1>
-          <p className="text-sm text-gray-500 mt-1 max-w-xl">
+          <h1 className="text-2xl font-bold text-gray-900 mt-1 dark:text-gray-100">Gestionar garantía</h1>
+          <p className="text-sm text-gray-500 mt-1 max-w-xl dark:text-gray-400">
             Selecciona el producto, el tipo de gestión y describe el motivo del reclamo.
           </p>
         </div>
         <Link
           href={`/garantias/${context.defaultWarrantyId}`}
-          className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border border-gray-200 text-gray-500 hover:bg-gray-50 hover:text-gray-900 transition-colors"
+          className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border border-gray-200 text-gray-500 hover:bg-gray-50 hover:text-gray-900 transition-colors dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-800 dark:hover:text-gray-100"
           title="Volver"
         >
           <ArrowLeft className="h-4 w-4" />
@@ -147,9 +147,9 @@ export function WarrantyManageForm({ context }: { context: WarrantyManageContext
       </div>
 
       {manageableItems.length === 0 ? (
-        <div className="rounded-2xl border border-red-100 bg-red-50/60 p-6 text-center">
-          <p className="font-semibold text-red-900">Sin cobertura vigente</p>
-          <p className="text-sm text-red-700/90 mt-1">
+        <div className="rounded-2xl border border-red-100 bg-red-50/60 p-6 text-center dark:border-red-500/20 dark:bg-red-500/10">
+          <p className="font-semibold text-red-900 dark:text-red-300">Sin cobertura vigente</p>
+          <p className="text-sm text-red-700/90 mt-1 dark:text-red-300/80">
             Ningún producto de esta venta tiene garantía activa para gestionar.
           </p>
         </div>
@@ -159,13 +159,13 @@ export function WarrantyManageForm({ context }: { context: WarrantyManageContext
             <div className="space-y-4">
               <section className="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm">
                 <SectionTitle required>Venta</SectionTitle>
-                <div className="mt-4 rounded-xl border border-gray-200 bg-gray-50 px-4 py-3">
-                  <p className="text-sm font-semibold text-gray-900">
+                <div className="mt-4 rounded-xl border border-gray-200 bg-gray-50 px-4 py-3 dark:border-gray-700 dark:bg-gray-800/50">
+                  <p className="text-sm font-semibold text-gray-900 dark:text-gray-100">
                     {saleLabel
                       ? `Venta ${saleLabel}`
                       : `Garantía ${shortWarrantyId(context.defaultWarrantyId)}`}
                   </p>
-                  <p className="text-sm text-gray-500 mt-0.5">
+                  <p className="text-xs text-gray-500 mt-0.5 dark:text-gray-400">
                     {context.customerName} · {formatDate(context.saleDate)}
                   </p>
                 </div>
@@ -191,10 +191,10 @@ export function WarrantyManageForm({ context }: { context: WarrantyManageContext
                         key={warranty.id}
                         className={`flex items-start gap-3 rounded-xl border p-4 transition-all cursor-pointer ${
                           !canSelect
-                            ? "border-gray-100 bg-gray-50/50 opacity-60 cursor-not-allowed"
+                            ? "border-gray-100 bg-gray-50/80 opacity-70 cursor-not-allowed dark:border-gray-800 dark:bg-gray-800/60 dark:opacity-100"
                             : isSelected
-                              ? "border-brand bg-brand-light/30 ring-2 ring-brand/10"
-                              : "border-gray-200 hover:border-brand/20 hover:bg-gray-50/50"
+                              ? "border-brand bg-brand-light/30 ring-2 ring-brand/10 dark:border-indigo-500/50 dark:bg-indigo-500/10 dark:ring-indigo-500/20"
+                              : "border-gray-200 hover:border-brand/20 hover:bg-gray-50/50 dark:border-gray-700 dark:hover:border-indigo-500/30 dark:hover:bg-gray-800/40"
                         }`}
                       >
                         <input
@@ -208,7 +208,7 @@ export function WarrantyManageForm({ context }: { context: WarrantyManageContext
                         />
                         <div className="flex-1 min-w-0">
                           <div className="flex flex-wrap items-center gap-2">
-                            <p className="font-semibold text-gray-900 text-sm">
+                            <p className="font-semibold text-gray-900 text-sm dark:text-gray-100">
                               {warranty.product.name}
                             </p>
                             <StatusBadge status={warranty.status} />
@@ -216,17 +216,17 @@ export function WarrantyManageForm({ context }: { context: WarrantyManageContext
                               <Link
                                 href={`/gestion/reclamos/${openClaimId}`}
                                 onClick={(e) => e.stopPropagation()}
-                                className="text-[11px] font-semibold text-amber-700 hover:underline"
+                                className="text-[11px] font-semibold text-amber-700 hover:underline dark:text-amber-400"
                               >
                                 Reclamo en curso
                               </Link>
                             )}
                           </div>
-                          <p className="text-xs text-gray-500 mt-1 font-mono truncate">
+                          <p className="text-xs text-gray-500 mt-1 font-mono truncate dark:text-gray-400">
                             {identifierLabel}: {warranty.identifier}
                           </p>
                           {coverage !== "cubierta" && (
-                            <p className="text-xs text-red-600 mt-1">
+                            <p className="text-xs text-red-600 mt-1 dark:text-red-400">
                               Sin cobertura vigente
                             </p>
                           )}
@@ -247,7 +247,7 @@ export function WarrantyManageForm({ context }: { context: WarrantyManageContext
                   value={motivo}
                   onChange={(e) => setMotivo(e.target.value)}
                   placeholder="Ej. Pantalla sin respuesta táctil. El cliente solicita cambio por otro equipo."
-                  className="w-full rounded-xl border border-gray-200 px-3.5 py-2.5 text-sm focus:border-brand focus:outline-none focus:ring-2 focus:ring-brand/10 resize-none"
+                  className="w-full rounded-xl border border-gray-200 px-3.5 py-2.5 text-sm focus:border-brand focus:outline-none focus:ring-2 focus:ring-brand/10 resize-none dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100 dark:placeholder:text-gray-500"
                 />
               </section>
             </div>
@@ -265,7 +265,7 @@ export function WarrantyManageForm({ context }: { context: WarrantyManageContext
                       className={`flex items-center justify-center gap-2 rounded-xl border px-4 py-3 text-sm font-semibold transition-all ${
                         claimType === value
                           ? "border-brand bg-brand text-white shadow-sm"
-                          : "border-gray-200 text-gray-700 hover:border-brand/20 hover:bg-brand-light/40"
+                          : "border-gray-200 text-gray-700 hover:border-brand/20 hover:bg-brand-light/40 dark:border-gray-700 dark:text-gray-200 dark:hover:border-indigo-500/30 dark:hover:bg-indigo-500/10"
                       } disabled:opacity-50 disabled:cursor-not-allowed`}
                     >
                       <Icon className="h-4 w-4" />
@@ -277,7 +277,7 @@ export function WarrantyManageForm({ context }: { context: WarrantyManageContext
 
               <section className="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm">
                 <SectionTitle>Resumen</SectionTitle>
-                <div className="mt-3 divide-y divide-gray-100">
+                <div className="mt-3 divide-y divide-gray-100 dark:divide-gray-800">
                   <SummaryRow
                     label="Venta"
                     value={
@@ -308,13 +308,13 @@ export function WarrantyManageForm({ context }: { context: WarrantyManageContext
                 </div>
 
                 {resumeClaimId && (
-                  <p className="mt-4 text-sm text-amber-700 bg-amber-50 rounded-xl px-3 py-2">
+                  <p className="mt-4 text-sm text-amber-700 bg-amber-50 rounded-xl px-3 py-2 dark:text-amber-300 dark:bg-amber-500/10">
                     Este producto ya tiene un reclamo abierto.
                   </p>
                 )}
 
                 {error && (
-                  <p className="mt-4 text-sm text-red-600 bg-red-50 rounded-xl px-3 py-2 font-medium">
+                  <p className="mt-4 text-sm text-red-600 bg-red-50 rounded-xl px-3 py-2 font-medium dark:text-red-300 dark:bg-red-500/10">
                     {error}
                   </p>
                 )}

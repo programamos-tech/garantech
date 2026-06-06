@@ -7,6 +7,7 @@ import {
   canTransitionClaimStatusForType,
   evaluateCoverage,
   isTerminalClaimStatus,
+  shortClaimId,
 } from "@/lib/claim";
 import type {
   IdentifierSearchResult,
@@ -350,6 +351,23 @@ export async function listClaims(): Promise<WarrantyClaimWithRelations[]> {
 
   if (!data) return [];
   return data.map((row) => enrichClaim(row as Record<string, unknown>));
+}
+
+export async function searchClaims(
+  query: string
+): Promise<WarrantyClaimWithRelations[]> {
+  const q = query.trim().toLowerCase();
+  if (!q) return [];
+
+  const claims = await listClaims();
+
+  return claims.filter(
+    (claim) =>
+      shortClaimId(claim.id).toLowerCase().includes(q) ||
+      claim.warranty.customer.name.toLowerCase().includes(q) ||
+      claim.warranty.product.name.toLowerCase().includes(q) ||
+      claim.warranty.identifier.toLowerCase().includes(q)
+  );
 }
 
 export async function listOpenClaims(): Promise<WarrantyClaimWithRelations[]> {

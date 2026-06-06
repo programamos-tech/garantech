@@ -198,7 +198,7 @@ export function ProductDetailView({
           </div>
         </div>
 
-        <div className="grid grid-cols-2 lg:grid-cols-5 divide-y lg:divide-y-0 lg:divide-x divide-gray-100 border-t border-gray-100">
+        <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-5 divide-y sm:divide-y-0 sm:divide-x divide-gray-100 border-t border-gray-100">
           <StatCard
             label="Garantía configurada"
             value={`${product.warranty_months} meses`}

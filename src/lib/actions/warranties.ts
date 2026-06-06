@@ -12,6 +12,8 @@ import type {
 import {
   calculateWarrantyEndDate,
   calculateWarrantyStatus,
+  shortSaleId,
+  shortWarrantyId,
   validateIdentifier,
   withRecalculatedStatus,
 } from "@/lib/warranty";
@@ -122,9 +124,7 @@ export async function createSaleWithWarranties(input: {
 
   revalidatePath("/garantias");
   revalidatePath("/garantias/nueva");
-  revalidatePath("/dashboard");
   revalidatePath("/clientes");
-  revalidatePath("/buscar");
   revalidatePath("/gestion");
 
   return {
@@ -186,10 +186,8 @@ export async function voidWarranty(warrantyId: string, reason: string) {
 
   revalidatePath("/garantias");
   revalidatePath(`/garantias/${warrantyId}`);
-  revalidatePath("/dashboard");
   revalidatePath("/clientes");
   revalidatePath("/productos");
-  revalidatePath("/buscar");
   return { success: true };
 }
 
@@ -222,11 +220,19 @@ export async function getWarranties(
       (w) =>
         w.customer.name.toLowerCase().includes(q) ||
         w.identifier.toLowerCase().includes(q) ||
+        w.product.name.toLowerCase().includes(q) ||
+        shortWarrantyId(w.id).toLowerCase().includes(q) ||
+        (w.sale_id && shortSaleId(w.sale_id).toLowerCase().includes(q)) ||
         (w.customer.document_number?.toLowerCase().includes(q) ?? false)
     );
   }
 
   return warranties;
+}
+
+export async function searchWarranties(query: string) {
+  if (!query.trim()) return [];
+  return getWarranties("all", query.trim());
 }
 
 export async function getWarrantyById(id: string) {
@@ -282,62 +288,5 @@ export async function getWarrantyDetail(
     warranty,
     sale: sale ?? null,
     saleItems: saleItems.length > 0 ? saleItems : [warranty],
-  };
-}
-
-export async function searchWarranties(query: string) {
-  const storeId = await getStoreId();
-  if (!storeId || !query.trim()) return [];
-
-  const supabase = await createClient();
-
-  const { data } = await supabase
-    .from("warranties")
-    .select("*, customer:customers(*), product:products(*)")
-    .eq("store_id", storeId)
-    .order("created_at", { ascending: false });
-
-  if (!data) return [];
-
-  const q = query.toLowerCase();
-  return data
-    .map(enrichWarranty)
-    .filter(
-      (w) =>
-        w.customer.name.toLowerCase().includes(q) ||
-        w.identifier.toLowerCase().includes(q) ||
-        (w.customer.document_number?.toLowerCase().includes(q) ?? false)
-    );
-}
-
-export async function getDashboardStats() {
-  const storeId = await getStoreId();
-  if (!storeId) {
-    return { vigentes: 0, porVencer: 0, totalClientes: 0, recent: [] };
-  }
-
-  const supabase = await createClient();
-
-  const [{ data: warranties }, { count: customerCount }] = await Promise.all([
-    supabase
-      .from("warranties")
-      .select("*, customer:customers(*), product:products(*)")
-      .eq("store_id", storeId)
-      .order("created_at", { ascending: false }),
-    supabase
-      .from("customers")
-      .select("*", { count: "exact", head: true })
-      .eq("store_id", storeId),
-  ]);
-
-  const enriched = (warranties ?? []).map(enrichWarranty);
-  const vigentes = enriched.filter((w) => w.status === "vigente").length;
-  const porVencer = enriched.filter((w) => w.status === "por_vencer").length;
-
-  return {
-    vigentes,
-    porVencer,
-    totalClientes: customerCount ?? 0,
-    recent: enriched.slice(0, 10),
   };
 }

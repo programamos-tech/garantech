@@ -13,6 +13,18 @@ import {
 } from "@/lib/warranty";
 import type { ProductCategory, ProductWithStats } from "@/lib/types";
 import { CATEGORY_LABELS } from "@/lib/types";
+import {
+  FilterBar,
+  FilterField,
+  FilterGrid,
+  FilterSearch,
+  PageActions,
+  PageHeader,
+  PageHeaderContent,
+  ResponsiveCardItem,
+  ResponsiveCardList,
+  ResponsiveTable,
+} from "@/components/ui/responsive-list";
 
 const categoryFilters: { value: ProductCategory | "all"; label: string }[] = [
   { value: "all", label: "Todas" },
@@ -27,23 +39,6 @@ const identifierFilters = [
   { value: "imei", label: "IMEI" },
   { value: "referencia", label: "Referencia" },
 ];
-
-function FilterField({
-  label,
-  children,
-}: {
-  label: string;
-  children: React.ReactNode;
-}) {
-  return (
-    <div className="space-y-1.5 shrink-0 w-full sm:w-40">
-      <span className="block text-[11px] font-semibold uppercase tracking-wide text-gray-500">
-        {label}
-      </span>
-      {children}
-    </div>
-  );
-}
 
 function IdentifierBadge({ category }: { category: ProductCategory }) {
   const isImei = category === "telefonia";
@@ -115,48 +110,48 @@ export function ProductosClient({
 
   return (
     <div className="space-y-6">
-      <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
-        <div>
+      <PageHeader>
+        <PageHeaderContent>
           <h1 className="text-2xl font-bold text-gray-900">Productos</h1>
           <p className="text-sm text-gray-500 mt-1 max-w-xl">
             Catálogo de productos con garantía. Define categoría, plazo de cobertura e
             identificador para registrar ventas.
           </p>
-        </div>
-        <div className="flex items-center gap-2 shrink-0">
+        </PageHeaderContent>
+        <PageActions>
           <Button
             type="button"
             variant="secondary"
             onClick={handleRefresh}
             disabled={isRefreshing}
-            className="whitespace-nowrap"
+            className="w-full sm:w-auto whitespace-nowrap"
           >
             <RefreshCw className={`h-4 w-4 ${isRefreshing ? "animate-spin" : ""}`} />
             Actualizar
           </Button>
-          <Link href="/productos/nuevo">
-            <Button className="whitespace-nowrap">
+          <Link href="/productos/nuevo" className="w-full sm:w-auto">
+            <Button className="w-full sm:w-auto whitespace-nowrap">
               <Plus className="h-4 w-4" />
               Nuevo producto
             </Button>
           </Link>
-        </div>
-      </div>
+        </PageActions>
+      </PageHeader>
 
       <div className="rounded-2xl border border-gray-200 bg-white shadow-sm overflow-hidden">
-        <div className="flex flex-col lg:flex-row lg:items-end gap-4 p-4 sm:p-5 border-b border-gray-100">
-          <div className="relative flex-1 min-w-0">
+        <FilterBar className="dark:border-gray-800">
+          <FilterSearch>
             <Search className="absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
             <input
               type="search"
-              placeholder="Nombre o código (ej. iPhone 15, A1B2C3D4)..."
+              placeholder="Nombre o código..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className="w-full rounded-xl border border-gray-200 bg-white py-2.5 pl-10 pr-4 text-sm text-gray-900 placeholder:text-gray-400 focus:border-brand focus:outline-none focus:ring-2 focus:ring-brand/10 transition-all"
+              className="w-full rounded-xl border border-gray-200 bg-white py-2.5 pl-10 pr-4 text-sm text-gray-900 placeholder:text-gray-400 focus:border-brand focus:outline-none focus:ring-2 focus:ring-brand/10 transition-all dark:border-gray-600 dark:bg-gray-900 dark:text-gray-100"
             />
-          </div>
+          </FilterSearch>
 
-          <div className="flex flex-col sm:flex-row gap-4 sm:gap-3">
+          <FilterGrid>
             <FilterField label="Identificador">
               <Select
                 value={identifierFilter}
@@ -178,8 +173,8 @@ export function ProductosClient({
                 className="py-2.5 border-gray-200"
               />
             </FilterField>
-          </div>
-        </div>
+          </FilterGrid>
+        </FilterBar>
 
         {filtered.length === 0 ? (
           <div className="px-6 py-16 text-center">
@@ -195,8 +190,37 @@ export function ProductosClient({
             )}
           </div>
         ) : (
-          <div className="overflow-x-auto">
-            <table className="w-full text-sm">
+          <>
+            <ResponsiveCardList>
+              {filtered.map((product) => (
+                <ResponsiveCardItem
+                  key={product.id}
+                  onClick={() => goToProduct(product.id)}
+                >
+                  <div className="flex items-start justify-between gap-3">
+                    <div className="flex items-start gap-3 min-w-0">
+                      <Package className="h-[18px] w-[18px] shrink-0 text-gray-400 dark:text-gray-500 mt-0.5" />
+                      <div className="min-w-0">
+                        <p className="font-semibold text-gray-900 truncate dark:text-gray-100">
+                          {product.name}
+                        </p>
+                        <p className="text-sm text-gray-500 mt-0.5 dark:text-gray-400">
+                          {CATEGORY_LABELS[product.category]} · {product.warranty_months} meses
+                        </p>
+                        <p className="text-xs text-gray-400 mt-1 dark:text-gray-500">
+                          {product.warranty_count}{" "}
+                          {product.warranty_count === 1 ? "garantía" : "garantías"}
+                        </p>
+                      </div>
+                    </div>
+                    <IdentifierBadge category={product.category} />
+                  </div>
+                </ResponsiveCardItem>
+              ))}
+            </ResponsiveCardList>
+
+            <ResponsiveTable>
+          <table className="w-full text-sm min-w-[720px]">
               <thead>
                 <tr className="border-b border-gray-100 bg-gray-50/80">
                   <th className="text-left px-5 py-3 text-xs font-semibold uppercase tracking-wide text-gray-500">
@@ -241,9 +265,7 @@ export function ProductosClient({
                   >
                     <td className="px-5 py-4">
                       <div className="flex items-center gap-2.5 min-w-0">
-                        <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-brand-light text-brand">
-                          <Package className="h-4 w-4" />
-                        </div>
+                        <Package className="h-4 w-4 shrink-0 text-gray-400 dark:text-gray-500" />
                         <span className="font-semibold text-gray-900 truncate">
                           {product.name}
                         </span>
@@ -297,7 +319,8 @@ export function ProductosClient({
                 ))}
               </tbody>
             </table>
-          </div>
+            </ResponsiveTable>
+          </>
         )}
       </div>
 

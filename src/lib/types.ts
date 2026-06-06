@@ -29,6 +29,11 @@ export interface Store {
   logo_url: string | null;
   nit: string;
   phone: string | null;
+  email: string | null;
+  address: string | null;
+  warranty_document_title: string | null;
+  warranty_terms: string | null;
+  warranty_footer: string | null;
   created_at: string;
 }
 

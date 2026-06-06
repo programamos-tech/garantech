@@ -89,7 +89,7 @@ export function ClaimDetailView({
           </div>
         </div>
 
-        <div className="grid grid-cols-2 lg:grid-cols-4 divide-y lg:divide-y-0 lg:divide-x divide-gray-100 border-t border-gray-100">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 divide-y sm:divide-y-0 sm:divide-x divide-gray-100 border-t border-gray-100">
           <StatCard
             label="Estado"
             value={<ClaimStatusBadge status={claim.status} showDot />}

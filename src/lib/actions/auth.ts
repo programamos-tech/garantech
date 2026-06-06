@@ -16,7 +16,7 @@ export async function signIn(formData: FormData) {
     return { error: "Correo o contraseña incorrectos" };
   }
 
-  redirect("/dashboard");
+  redirect("/garantias");
 }
 
 export async function signUp(formData: FormData) {
@@ -56,7 +56,7 @@ export async function signUp(formData: FormData) {
     return { error: "Error al registrar la tienda: " + storeError.message };
   }
 
-  redirect("/dashboard");
+  redirect("/garantias");
 }
 
 export async function signOut() {

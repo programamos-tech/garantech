@@ -99,7 +99,7 @@ export function ProductFormModal({
     >
       <form onSubmit={handleSubmit} className="space-y-4" key={product?.id ?? "new"}>
         {forWarranty && !isEditing && (
-          <p className="text-sm text-gray-600">
+          <p className="text-sm text-gray-600 dark:text-gray-400">
             Registra el producto con su plazo de garantía y el identificador de esta venta. Al
             guardar quedará seleccionado en el formulario.
           </p>
@@ -145,7 +145,7 @@ export function ProductFormModal({
         )}
 
         {error && (
-          <p className="text-sm text-red-600 bg-red-50 rounded-lg px-3 py-2">{error}</p>
+          <p className="text-sm text-red-600 bg-red-50 rounded-lg px-3 py-2 dark:text-red-300 dark:bg-red-500/10">{error}</p>
         )}
 
         <div className="flex gap-3 pt-2">

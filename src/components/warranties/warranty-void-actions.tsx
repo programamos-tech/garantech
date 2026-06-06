@@ -51,14 +51,14 @@ function VoidWarrantyModal({
   return (
     <Modal open={open} onClose={onClose} title="Anular garantía">
       <form onSubmit={handleVoid} className="space-y-4">
-        <p className="text-sm text-gray-600">
+        <p className="text-sm text-gray-600 dark:text-gray-400">
           Esta garantía dejará de estar vigente. Indica por qué se anula (error de
           registro, devolución, cambio de producto, etc.).
         </p>
         <div className="space-y-1.5">
           <label
             htmlFor="void-reason"
-            className="block text-sm font-semibold text-gray-700"
+            className="block text-sm font-semibold text-gray-700 dark:text-gray-300"
           >
             Motivo de la anulación *
           </label>
@@ -69,12 +69,12 @@ function VoidWarrantyModal({
             onChange={(e) => setReason(e.target.value)}
             placeholder="Ej. Venta registrada por error — el cliente devolvió el producto."
             required
-            className="w-full rounded-xl border border-gray-200 px-3.5 py-2.5 text-sm focus:border-brand focus:outline-none focus:ring-2 focus:ring-brand/10 transition-all resize-none"
+            className="w-full rounded-xl border border-gray-200 px-3.5 py-2.5 text-sm focus:border-brand focus:outline-none focus:ring-2 focus:ring-brand/10 transition-all resize-none dark:border-gray-600 dark:bg-gray-900 dark:text-gray-100 dark:placeholder:text-gray-500"
           />
         </div>
 
         {error && (
-          <p className="text-sm text-red-600 bg-red-50 rounded-xl px-3 py-2 font-medium">
+          <p className="text-sm text-red-600 bg-red-50 rounded-xl px-3 py-2 font-medium dark:text-red-300 dark:bg-red-500/10">
             {error}
           </p>
         )}
@@ -115,7 +115,7 @@ export function WarrantyVoidHeaderButton({
         size="sm"
         variant="secondary"
         onClick={() => setOpen(true)}
-        className="text-red-600 border-red-200 hover:bg-red-50 whitespace-nowrap"
+        className="text-red-600 border-red-200 hover:bg-red-50 whitespace-nowrap dark:text-red-300 dark:border-red-800 dark:hover:bg-red-950/40"
       >
         <Ban className="h-4 w-4" />
         Anular garantía
@@ -140,20 +140,20 @@ export function WarrantyVoidNotice({
   if (!isVoided || !voidReason) return null;
 
   return (
-    <section className="rounded-2xl border border-red-100 bg-red-50/50 p-5 shadow-sm">
-      <h2 className="text-[11px] font-semibold uppercase tracking-wide text-red-600 mb-2">
+    <section className="rounded-2xl border border-red-100 bg-red-50/50 p-5 shadow-sm dark:border-red-900/45 dark:bg-red-950/35">
+      <h2 className="text-[11px] font-semibold uppercase tracking-wide text-red-600 mb-2 dark:text-red-300">
         Garantía anulada
       </h2>
       {voidedAt && (
-        <p className="text-xs text-red-600/80 mb-3">
+        <p className="text-xs text-red-600/80 mb-3 dark:text-red-300/90">
           Anulada el {formatDateTimeDetail(voidedAt)} · {storeName}
         </p>
       )}
-      <div className="rounded-xl border border-red-100 bg-white p-4">
-        <p className="text-[11px] font-semibold uppercase tracking-wide text-red-600 mb-1">
+      <div className="rounded-xl border border-red-100 bg-white p-4 dark:border-red-800/50 dark:bg-red-950/50">
+        <p className="text-[11px] font-semibold uppercase tracking-wide text-red-600 mb-1 dark:text-red-300">
           Motivo de la anulación
         </p>
-        <p className="text-sm text-red-900 leading-relaxed whitespace-pre-wrap">
+        <p className="text-sm text-red-900 leading-relaxed whitespace-pre-wrap dark:text-red-100">
           {voidReason}
         </p>
       </div>

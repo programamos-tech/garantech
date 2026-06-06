@@ -171,7 +171,7 @@ export function DatePicker({
   return (
     <div ref={rootRef} className={cn("relative space-y-1.5", className)}>
       {label && (
-        <label htmlFor={inputId} className="block text-sm font-medium text-gray-700">
+        <label htmlFor={inputId} className="block text-sm font-medium text-gray-700 dark:text-gray-300">
           {label}
         </label>
       )}
@@ -185,25 +185,25 @@ export function DatePicker({
         type="button"
         onClick={() => setOpen((prev) => !prev)}
         className={cn(
-          "flex w-full items-center justify-between rounded-xl border border-gray-200 bg-white px-3.5 py-2.5 text-sm text-left transition-all",
+          "flex w-full items-center justify-between rounded-xl border border-gray-200 bg-white px-3.5 py-2.5 text-sm text-left transition-all dark:border-gray-600 dark:bg-gray-900",
           open
-            ? "border-brand ring-2 ring-brand/10"
-            : "hover:border-gray-300 focus:border-brand focus:outline-none focus:ring-2 focus:ring-brand/10"
+            ? "border-brand ring-2 ring-brand/10 dark:border-indigo-400 dark:ring-indigo-400/20"
+            : "hover:border-gray-300 focus:border-brand focus:outline-none focus:ring-2 focus:ring-brand/10 dark:hover:border-gray-500 dark:focus:border-indigo-400 dark:focus:ring-indigo-400/20"
         )}
       >
-        <span className={value ? "text-gray-900" : "text-gray-400"}>
+        <span className={value ? "text-gray-900 dark:text-gray-100" : "text-gray-400 dark:text-gray-500"}>
           {value ? formatDisplay(value) : "Seleccionar fecha"}
         </span>
-        <Calendar className="h-4 w-4 text-gray-400 shrink-0" />
+        <Calendar className="h-4 w-4 text-gray-400 shrink-0 dark:text-gray-500" />
       </button>
 
       {open && (
-        <div className="absolute z-50 mt-2 w-full min-w-[280px] rounded-2xl border border-gray-200 bg-white p-4 shadow-lg">
+        <div className="absolute z-50 mt-2 w-full min-w-[280px] rounded-2xl border border-gray-200 bg-white p-4 shadow-lg dark:border-gray-700 dark:bg-gray-900 dark:shadow-black/40">
           <div className="flex items-center justify-between gap-2 mb-4">
             <button
               type="button"
               onClick={() => setShowMonthPicker((prev) => !prev)}
-              className="flex items-center gap-1 text-sm font-semibold text-gray-900 hover:text-brand transition-colors"
+              className="flex items-center gap-1 text-sm font-semibold text-gray-900 hover:text-brand transition-colors dark:text-gray-100 dark:hover:text-indigo-300"
             >
               {MONTHS[viewMonth]} de {viewYear}
               <ChevronDown
@@ -217,7 +217,7 @@ export function DatePicker({
               <button
                 type="button"
                 onClick={goToPreviousMonth}
-                className="flex h-8 w-8 items-center justify-center rounded-lg text-gray-500 hover:bg-gray-100 transition-colors"
+                className="flex h-8 w-8 items-center justify-center rounded-lg text-gray-500 hover:bg-gray-100 transition-colors dark:text-gray-400 dark:hover:bg-gray-800"
                 title="Mes anterior"
               >
                 <ChevronLeft className="h-4 w-4" />
@@ -225,7 +225,7 @@ export function DatePicker({
               <button
                 type="button"
                 onClick={goToNextMonth}
-                className="flex h-8 w-8 items-center justify-center rounded-lg text-gray-500 hover:bg-gray-100 transition-colors"
+                className="flex h-8 w-8 items-center justify-center rounded-lg text-gray-500 hover:bg-gray-100 transition-colors dark:text-gray-400 dark:hover:bg-gray-800"
                 title="Mes siguiente"
               >
                 <ChevronRight className="h-4 w-4" />
@@ -247,7 +247,7 @@ export function DatePicker({
                     "rounded-lg px-2 py-2 text-xs font-medium capitalize transition-colors",
                     index === viewMonth
                       ? "bg-brand text-white"
-                      : "text-gray-700 hover:bg-gray-100"
+                      : "text-gray-700 hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-gray-800"
                   )}
                 >
                   {month.slice(0, 3)}
@@ -260,7 +260,7 @@ export function DatePicker({
                 {WEEKDAYS.map((day, index) => (
                   <div
                     key={`${day}-${index}`}
-                    className="py-1 text-center text-xs font-medium text-gray-400"
+                    className="py-1 text-center text-xs font-medium text-gray-400 dark:text-gray-500"
                   >
                     {day}
                   </div>
@@ -279,9 +279,9 @@ export function DatePicker({
                       onClick={() => selectDate(iso)}
                       className={cn(
                         "mx-auto flex h-9 w-9 items-center justify-center rounded-lg text-sm transition-colors",
-                        !inCurrentMonth && "text-gray-300",
-                        inCurrentMonth && !isSelected && "text-gray-800 hover:bg-gray-100",
-                        isToday && !isSelected && "ring-1 ring-gray-300",
+                        !inCurrentMonth && "text-gray-300 dark:text-gray-600",
+                        inCurrentMonth && !isSelected && "text-gray-800 hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-gray-800",
+                        isToday && !isSelected && "ring-1 ring-gray-300 dark:ring-gray-600",
                         isSelected &&
                           "bg-brand text-white font-semibold ring-2 ring-amber-400/80"
                       )}
@@ -294,18 +294,18 @@ export function DatePicker({
             </>
           )}
 
-          <div className="mt-4 flex items-center justify-between border-t border-gray-100 pt-3">
+          <div className="mt-4 flex items-center justify-between border-t border-gray-100 pt-3 dark:border-gray-800">
             <button
               type="button"
               onClick={clearDate}
-              className="text-sm font-semibold text-brand hover:opacity-80"
+              className="text-sm font-semibold text-brand hover:opacity-80 dark:text-indigo-300"
             >
               Borrar
             </button>
             <button
               type="button"
               onClick={selectToday}
-              className="text-sm font-semibold text-brand hover:opacity-80"
+              className="text-sm font-semibold text-brand hover:opacity-80 dark:text-indigo-300"
             >
               Hoy
             </button>

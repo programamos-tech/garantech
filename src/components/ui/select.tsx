@@ -19,14 +19,14 @@ export function Select({
   return (
     <div className="space-y-1.5">
       {label && (
-        <label htmlFor={selectId} className="block text-sm font-semibold text-gray-700">
+        <label htmlFor={selectId} className="block text-sm font-semibold text-gray-700 dark:text-gray-300">
           {label}
         </label>
       )}
       <select
         id={selectId}
         className={cn(
-          "w-full rounded-xl border border-brand/10 bg-white px-3.5 py-2.5 text-sm text-foreground focus:border-brand focus:outline-none focus:ring-2 focus:ring-brand/15 transition-all",
+          "w-full rounded-xl border border-gray-200 bg-white px-3.5 py-2.5 text-sm text-gray-900 focus:border-brand focus:outline-none focus:ring-2 focus:ring-brand/15 transition-all dark:border-gray-600 dark:bg-gray-900 dark:text-gray-100 dark:focus:border-indigo-400 dark:focus:ring-indigo-400/20",
           error && "border-red-300",
           className
         )}

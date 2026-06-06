@@ -103,7 +103,7 @@ function ClaimWorkflowSteps({ claim }: { claim: WarrantyClaimWithRelations }) {
                       ? cn(CLAIM_STATUS_DOT_STYLES[step], "text-white")
                       : isCurrent
                         ? cn(CLAIM_STATUS_STYLES[step], "ring-2 ring-offset-1")
-                        : "bg-gray-100 text-gray-400"
+                        : "bg-gray-100 text-gray-400 dark:bg-gray-800 dark:text-gray-500"
                   )}
                 >
                   {isComplete ? "✓" : index + 1}
@@ -113,7 +113,7 @@ function ClaimWorkflowSteps({ claim }: { claim: WarrantyClaimWithRelations }) {
                     "text-xs font-semibold truncate rounded-full border px-2 py-0.5",
                     isComplete || isCurrent
                       ? CLAIM_STATUS_STYLES[step]
-                      : "text-gray-400 border-transparent"
+                      : "text-gray-400 border-transparent dark:text-gray-500"
                   )}
                 >
                   {getStepLabel(step, claim.claim_type)}
@@ -123,7 +123,7 @@ function ClaimWorkflowSteps({ claim }: { claim: WarrantyClaimWithRelations }) {
                 <div
                   className={cn(
                     "hidden sm:block mx-3 h-px w-8 lg:w-12",
-                    isComplete ? "bg-emerald-300" : "bg-gray-200"
+                    isComplete ? "bg-emerald-300 dark:bg-emerald-600/40" : "bg-gray-200 dark:bg-gray-700"
                   )}
                 />
               )}
@@ -137,8 +137,8 @@ function ClaimWorkflowSteps({ claim }: { claim: WarrantyClaimWithRelations }) {
           className={cn(
             "text-sm font-medium rounded-xl px-4 py-3 border",
             isClosedSuccess
-              ? "text-green-800 bg-green-50 border-green-100"
-              : "text-red-800 bg-red-50 border-red-100"
+              ? "text-green-800 bg-green-50 border-green-100 dark:bg-green-500/10 dark:text-green-300 dark:border-green-500/20"
+              : "text-red-800 bg-red-50 border-red-100 dark:bg-red-500/10 dark:text-red-300 dark:border-red-500/20"
           )}
         >
           Reclamo cerrado
@@ -209,8 +209,8 @@ export function ClaimStatusActions({ claim }: { claim: WarrantyClaimWithRelation
     <div className="space-y-5">
       <ClaimWorkflowSteps claim={claim} />
 
-      <div className="rounded-xl border border-brand/10 bg-brand-light/40 px-4 py-3">
-        <p className="text-sm text-brand font-medium">
+      <div className="rounded-xl border border-brand/10 bg-brand-light/40 px-4 py-3 dark:border-indigo-500/20 dark:bg-indigo-500/10">
+        <p className="text-sm text-brand font-medium dark:text-indigo-200">
           {claim.status === "ingresado" && (
             <>
               Paso 1: pasa el reclamo de <strong>{typeLabel.toLowerCase()}</strong> a diagnóstico

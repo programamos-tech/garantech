@@ -52,18 +52,20 @@ function StatCard({
   accent?: boolean;
 }) {
   return (
-    <div className="px-5 py-4 border-r border-gray-100 last:border-r-0 min-w-0">
-      <p className="text-[11px] font-semibold uppercase tracking-wide text-gray-500 truncate">
+    <div className="px-5 py-4 border-r border-gray-100 last:border-r-0 min-w-0 dark:border-gray-800">
+      <p className="text-[11px] font-semibold uppercase tracking-wide text-gray-500 truncate dark:text-gray-400">
         {label}
       </p>
       <p
         className={`text-xl font-bold mt-1 truncate ${
-          accent ? "text-amber-600" : "text-gray-900"
+          accent ? "text-amber-600 dark:text-amber-400" : "text-gray-900 dark:text-gray-100"
         }`}
       >
         {value}
       </p>
-      {sub && <p className="text-xs text-gray-400 mt-0.5 truncate">{sub}</p>}
+      {sub && (
+        <p className="text-xs text-gray-400 mt-0.5 truncate dark:text-gray-500">{sub}</p>
+      )}
     </div>
   );
 }
@@ -113,24 +115,26 @@ export function CustomerDetailView({
   return (
     <div className="space-y-6">
       {/* Encabezado */}
-      <section className="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm">
+      <section className="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm dark:border-gray-800 dark:bg-gray-900">
         <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
           <div className="min-w-0">
-            <p className="text-sm text-gray-500">Clientes / {customer.name}</p>
+            <p className="text-sm text-gray-500 dark:text-gray-400">Clientes / {customer.name}</p>
             <div className="flex items-center gap-4 mt-3">
               <UserAvatar seed={customer.id} name={customer.name} size={56} />
               <div className="min-w-0">
-                <h1 className="text-2xl font-bold text-gray-900 truncate">
+                <h1 className="text-2xl font-bold text-gray-900 truncate dark:text-gray-100">
                   {customer.name}
                 </h1>
-                <p className="text-sm text-gray-500 mt-1 truncate">{contactLine(customer)}</p>
+                <p className="text-sm text-gray-500 mt-1 truncate dark:text-gray-400">
+                  {contactLine(customer)}
+                </p>
               </div>
             </div>
           </div>
           <div className="flex items-center gap-2 shrink-0">
             <Link
               href="/clientes"
-              className="flex h-9 w-9 items-center justify-center rounded-lg border border-gray-200 text-gray-500 hover:bg-gray-50 hover:text-gray-900 transition-colors"
+              className="flex h-9 w-9 items-center justify-center rounded-lg border border-gray-200 text-gray-500 hover:bg-gray-50 hover:text-gray-900 transition-colors dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-800 dark:hover:text-gray-100"
               title="Volver"
             >
               <ArrowLeft className="h-4 w-4" />
@@ -143,8 +147,8 @@ export function CustomerDetailView({
       </section>
 
       {/* Estadísticas */}
-      <section className="rounded-2xl border border-gray-200 bg-white shadow-sm overflow-hidden">
-        <div className="grid grid-cols-2 lg:grid-cols-5 divide-y lg:divide-y-0 lg:divide-x divide-gray-100">
+      <section className="rounded-2xl border border-gray-200 bg-white shadow-sm overflow-hidden dark:border-gray-800 dark:bg-gray-900">
+        <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-5 divide-y sm:divide-y-0 sm:divide-x divide-gray-100 dark:divide-gray-800">
           <StatCard label="Total garantías" value={stats.total} sub="Registradas" />
           <StatCard label="Vigentes" value={stats.vigentes} sub="En cobertura" />
           <StatCard
@@ -165,12 +169,12 @@ export function CustomerDetailView({
       {/* Contenido principal */}
       <div className="grid grid-cols-1 lg:grid-cols-[1fr_320px] gap-6 items-start">
         {/* Garantías */}
-        <section className="rounded-2xl border border-gray-200 bg-white shadow-sm overflow-hidden">
-          <div className="px-6 py-5 border-b border-gray-100">
-            <h2 className="text-[11px] font-semibold uppercase tracking-wide text-gray-500">
+        <section className="rounded-2xl border border-gray-200 bg-white shadow-sm overflow-hidden dark:border-gray-800 dark:bg-gray-900">
+          <div className="px-6 py-5 border-b border-gray-100 dark:border-gray-800">
+            <h2 className="text-[11px] font-semibold uppercase tracking-wide text-gray-500 dark:text-gray-400">
               Garantías
             </h2>
-            <p className="text-sm text-gray-500 mt-1">
+            <p className="text-sm text-gray-500 mt-1 dark:text-gray-400">
               Productos registrados con garantía para este cliente. Abre el detalle para ver
               identificador, fechas y estado.
             </p>
@@ -178,31 +182,33 @@ export function CustomerDetailView({
 
           {!warranties.length ? (
             <div className="px-6 py-16 text-center">
-              <p className="text-sm text-gray-400">Sin garantías registradas</p>
+              <p className="text-sm text-gray-400 dark:text-gray-500">Sin garantías registradas</p>
               <Link href="/garantias/nueva" className="inline-block mt-3 text-sm link-brand">
                 Registrar primera garantía →
               </Link>
             </div>
           ) : (
-            <ul className="divide-y divide-gray-100">
+            <ul className="divide-y divide-gray-100 dark:divide-gray-800">
               {warranties.map((w) => (
                 <li key={w.id}>
                   <button
                     type="button"
                     onClick={() => openWarranty(w.id)}
-                    className="w-full flex items-center justify-between gap-4 px-6 py-4 text-left hover:bg-gray-50/80 transition-colors"
+                    className="w-full flex items-center justify-between gap-4 px-6 py-4 text-left hover:bg-gray-50/80 transition-colors dark:hover:bg-gray-800/60"
                   >
                     <div className="min-w-0">
-                      <p className="font-semibold text-gray-900 truncate">
+                      <p className="font-semibold text-gray-900 truncate dark:text-gray-100">
                         {w.product.name}
                       </p>
-                      <p className="text-sm text-gray-500 mt-0.5">
+                      <p className="text-sm text-gray-500 mt-0.5 dark:text-gray-400">
                         {shortWarrantyId(w.id)} · Venta {formatDate(w.sale_date)} ·{" "}
                         {formatDateTime(w.created_at)}
                       </p>
                     </div>
                     <div className="shrink-0 text-right space-y-1">
-                      <p className="text-sm font-mono text-gray-600">{w.identifier}</p>
+                      <p className="text-sm font-mono text-gray-600 dark:text-gray-300">
+                        {w.identifier}
+                      </p>
                       <StatusBadge status={w.status} />
                     </div>
                   </button>
@@ -213,26 +219,28 @@ export function CustomerDetailView({
         </section>
 
         {/* Top productos */}
-        <section className="rounded-2xl border border-gray-200 bg-white shadow-sm overflow-hidden lg:sticky lg:top-20">
-          <div className="px-5 py-4 border-b border-gray-100">
-            <h2 className="text-[11px] font-semibold uppercase tracking-wide text-gray-500">
+        <section className="rounded-2xl border border-gray-200 bg-white shadow-sm overflow-hidden lg:sticky lg:top-20 dark:border-gray-800 dark:bg-gray-900">
+          <div className="px-5 py-4 border-b border-gray-100 dark:border-gray-800">
+            <h2 className="text-[11px] font-semibold uppercase tracking-wide text-gray-500 dark:text-gray-400">
               Top productos con garantía
             </h2>
           </div>
           {!topProducts.length ? (
-            <p className="px-5 py-10 text-sm text-gray-400 text-center">Sin datos</p>
+            <p className="px-5 py-10 text-sm text-gray-400 text-center dark:text-gray-500">
+              Sin datos
+            </p>
           ) : (
-            <ol className="divide-y divide-gray-50">
+            <ol className="divide-y divide-gray-50 dark:divide-gray-800">
               {topProducts.map(([name, count], index) => (
                 <li
                   key={name}
                   className="flex items-center justify-between gap-3 px-5 py-3 text-sm"
                 >
-                  <span className="text-gray-900 truncate">
-                    <span className="text-gray-400 mr-2">{index + 1}.</span>
+                  <span className="text-gray-900 truncate dark:text-gray-100">
+                    <span className="text-gray-400 mr-2 dark:text-gray-500">{index + 1}.</span>
                     {name}
                   </span>
-                  <span className="text-gray-500 shrink-0">
+                  <span className="text-gray-500 shrink-0 dark:text-gray-400">
                     {count} {count === 1 ? "vez" : "veces"}
                   </span>
                 </li>

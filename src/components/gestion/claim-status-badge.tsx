@@ -3,12 +3,18 @@ import type { WarrantyClaimStatus } from "@/lib/types";
 import { CLAIM_STATUS_LABELS } from "@/lib/types";
 
 export const CLAIM_STATUS_STYLES: Record<WarrantyClaimStatus, string> = {
-  ingresado: "bg-sky-100 text-sky-800 border-sky-200",
-  en_diagnostico: "bg-amber-100 text-amber-800 border-amber-200",
-  aprobado: "bg-emerald-100 text-emerald-800 border-emerald-200",
-  no_aplica: "bg-red-100 text-red-800 border-red-200",
-  devolucion_aprobada: "bg-violet-100 text-violet-800 border-violet-200",
-  listo_entrega: "bg-green-100 text-green-800 border-green-200",
+  ingresado:
+    "bg-sky-100 text-sky-800 border-sky-200 dark:bg-sky-500/15 dark:text-sky-300 dark:border-sky-500/25",
+  en_diagnostico:
+    "bg-amber-100 text-amber-800 border-amber-200 dark:bg-amber-500/15 dark:text-amber-300 dark:border-amber-500/25",
+  aprobado:
+    "bg-emerald-100 text-emerald-800 border-emerald-200 dark:bg-emerald-500/15 dark:text-emerald-300 dark:border-emerald-500/25",
+  no_aplica:
+    "bg-red-100 text-red-800 border-red-200 dark:bg-red-500/15 dark:text-red-300 dark:border-red-500/25",
+  devolucion_aprobada:
+    "bg-violet-100 text-violet-800 border-violet-200 dark:bg-violet-500/15 dark:text-violet-300 dark:border-violet-500/25",
+  listo_entrega:
+    "bg-green-100 text-green-800 border-green-200 dark:bg-green-500/15 dark:text-green-300 dark:border-green-500/25",
 };
 
 export const CLAIM_STATUS_DOT_STYLES: Record<WarrantyClaimStatus, string> = {

@@ -19,7 +19,9 @@ export default async function DashboardLayout({
       <Sidebar store={store} />
       <div className="lg:pl-64">
         <Topbar store={store} user={user} />
-        <main className="px-4 py-6 lg:px-8 pb-24 lg:pb-8">{children}</main>
+        <main className="px-3 pt-4 sm:px-4 sm:pt-6 lg:px-8 max-w-[1600px] lg:mx-auto pb-[calc(var(--mobile-nav-height)+1rem+env(safe-area-inset-bottom,0px))] lg:pb-8">
+          {children}
+        </main>
       </div>
       <MobileNav />
     </div>

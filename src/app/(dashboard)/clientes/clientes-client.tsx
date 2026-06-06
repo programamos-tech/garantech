@@ -8,6 +8,14 @@ import { Button } from "@/components/ui/button";
 import { UserAvatar } from "@/components/ui/user-avatar";
 import { formatDateTime } from "@/lib/warranty";
 import type { Customer } from "@/lib/types";
+import {
+  PageActions,
+  PageHeader,
+  PageHeaderContent,
+  ResponsiveCardItem,
+  ResponsiveCardList,
+  ResponsiveTable,
+} from "@/components/ui/responsive-list";
 
 function formatDocument(doc: string | null): string {
   if (!doc) return "—";
@@ -45,32 +53,32 @@ export function ClientesClient({
 
   return (
     <div className="space-y-6">
-      <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
-        <div>
+      <PageHeader>
+        <PageHeaderContent>
           <h1 className="text-2xl font-bold text-gray-900">Clientes</h1>
           <p className="text-sm text-gray-500 mt-1 max-w-xl">
             Lista de tu tienda. Busca por nombre, documento, correo o teléfono.
           </p>
-        </div>
-        <div className="flex items-center gap-2 shrink-0">
+        </PageHeaderContent>
+        <PageActions>
           <Button
             type="button"
             variant="secondary"
             onClick={handleRefresh}
             disabled={isRefreshing}
-            className="whitespace-nowrap"
+            className="w-full sm:w-auto whitespace-nowrap"
           >
             <RefreshCw className={`h-4 w-4 ${isRefreshing ? "animate-spin" : ""}`} />
             Actualizar
           </Button>
-          <Link href="/clientes/nuevo">
-            <Button className="whitespace-nowrap">
+          <Link href="/clientes/nuevo" className="w-full sm:w-auto">
+            <Button className="w-full sm:w-auto whitespace-nowrap">
               <Plus className="h-4 w-4" />
               Nuevo cliente
             </Button>
           </Link>
-        </div>
-      </div>
+        </PageActions>
+      </PageHeader>
 
       <div className="rounded-2xl border border-gray-200 bg-white shadow-sm overflow-hidden">
         <div className="p-4 sm:p-5 border-b border-gray-100">
@@ -98,8 +106,42 @@ export function ClientesClient({
             )}
           </div>
         ) : (
-          <div className="overflow-x-auto">
-            <table className="w-full text-sm">
+          <>
+            <ResponsiveCardList>
+              {filtered.map((customer) => (
+                <ResponsiveCardItem
+                  key={customer.id}
+                  onClick={() => goToCustomer(customer.id)}
+                >
+                  <div className="flex items-center gap-3">
+                    <UserAvatar
+                      seed={customer.id}
+                      name={customer.name}
+                      size={40}
+                      className="ring-0 shadow-none shrink-0"
+                    />
+                    <div className="min-w-0 flex-1">
+                      <p className="font-medium text-gray-900 truncate dark:text-gray-100">
+                        {customer.name}
+                      </p>
+                      <p className="text-sm text-gray-500 mt-0.5 dark:text-gray-400">
+                        {formatDocument(customer.document_number)}
+                        {customer.phone ? ` · ${customer.phone}` : ""}
+                      </p>
+                      {customer.email && (
+                        <p className="text-xs text-gray-400 mt-0.5 truncate dark:text-gray-500">
+                          {customer.email}
+                        </p>
+                      )}
+                    </div>
+                    <Eye className="h-4 w-4 text-gray-400 shrink-0" />
+                  </div>
+                </ResponsiveCardItem>
+              ))}
+            </ResponsiveCardList>
+
+            <ResponsiveTable>
+          <table className="w-full text-sm min-w-[640px]">
               <thead>
                 <tr className="border-b border-gray-100 bg-gray-50/80">
                   <th className="text-left px-5 py-3 text-xs font-semibold uppercase tracking-wide text-gray-500">
@@ -171,7 +213,8 @@ export function ClientesClient({
                 ))}
               </tbody>
             </table>
-          </div>
+            </ResponsiveTable>
+          </>
         )}
       </div>
     </div>

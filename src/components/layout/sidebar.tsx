@@ -4,31 +4,28 @@ import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 import {
-  LayoutDashboard,
   Users,
   Package,
   ShieldCheck,
   ClipboardList,
-  Search,
   LogOut,
+  Settings,
 } from "lucide-react";
 import type { Store } from "@/lib/types";
 import { signOut } from "@/lib/actions/auth";
 
 const navItems = [
-  { href: "/dashboard", label: "Panel", icon: LayoutDashboard },
   { href: "/garantias", label: "Garantías", icon: ShieldCheck },
   { href: "/gestion", label: "Reclamos", icon: ClipboardList },
   { href: "/clientes", label: "Clientes", icon: Users },
   { href: "/productos", label: "Productos", icon: Package },
-  { href: "/buscar", label: "Buscar", icon: Search },
 ];
 
 export function Sidebar({ store }: { store: Store }) {
   const pathname = usePathname();
 
   return (
-    <aside className="hidden lg:flex lg:w-64 lg:flex-col lg:fixed lg:inset-y-0 bg-brand text-white">
+    <aside className="hidden lg:flex lg:w-64 lg:flex-col lg:fixed lg:inset-y-0 bg-brand text-white z-40">
       <div className="flex flex-col h-full">
         <div className="px-3 py-3 border-b border-white/10">
           <Image
@@ -66,6 +63,17 @@ export function Sidebar({ store }: { store: Store }) {
               </Link>
             );
           })}
+          <Link
+            href="/configuracion"
+            className={`flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-semibold transition-all duration-150 ${
+              pathname.startsWith("/configuracion")
+                ? "bg-white text-brand shadow-sm dark:bg-white dark:text-brand"
+                : "text-white/60 hover:bg-white/10 hover:text-white"
+            }`}
+          >
+            <Settings className="h-5 w-5 shrink-0" />
+            Configuración
+          </Link>
         </nav>
 
         <div className="p-4 border-t border-white/10">
@@ -88,20 +96,23 @@ export function MobileNav() {
   const pathname = usePathname();
 
   return (
-    <nav className="fixed bottom-0 inset-x-0 z-40 border-t border-brand/10 bg-white lg:hidden shadow-[0_-4px_20px_rgba(33,35,85,0.08)] dark:border-gray-800 dark:bg-gray-950">
-      <div className="flex items-center justify-around py-2">
-        {navItems.slice(0, 6).map(({ href, label, icon: Icon }) => {
+    <nav
+      className="fixed bottom-0 inset-x-0 z-40 border-t border-white/10 bg-brand lg:hidden min-h-[var(--mobile-nav-height)] pb-[env(safe-area-inset-bottom,0px)]"
+      aria-label="Navegación principal"
+    >
+      <div className="flex items-stretch justify-around py-1.5">
+        {navItems.map(({ href, label, icon: Icon }) => {
           const active = pathname === href || pathname.startsWith(href + "/");
           return (
             <Link
               key={href}
               href={href}
-              className={`flex flex-col items-center gap-0.5 px-2 py-1 text-[10px] font-semibold transition-colors ${
-                active ? "text-brand dark:text-indigo-300" : "text-gray-400 dark:text-gray-500"
+              className={`flex min-w-0 flex-1 flex-col items-center justify-center gap-0.5 px-1 py-1.5 text-[10px] font-semibold transition-colors ${
+                active ? "text-white" : "text-white/50 hover:text-white/80"
               }`}
             >
-              <Icon className={`h-5 w-5 ${active ? "stroke-[2.5]" : ""}`} />
-              {label}
+              <Icon className={`h-5 w-5 shrink-0 ${active ? "stroke-[2.5]" : ""}`} />
+              <span className="truncate max-w-[4.5rem]">{label}</span>
             </Link>
           );
         })}

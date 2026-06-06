@@ -40,6 +40,12 @@ function newLineItem(): LineItem {
   };
 }
 
+const fieldInputClass =
+  "w-full rounded-xl border border-gray-200 bg-white px-3.5 py-2.5 text-sm text-gray-900 placeholder:text-gray-400 focus:border-brand focus:outline-none focus:ring-2 focus:ring-brand/15 transition-all dark:border-gray-600 dark:bg-gray-900 dark:text-gray-100 dark:placeholder:text-gray-500 dark:focus:border-indigo-400 dark:focus:ring-indigo-400/20";
+
+const actionLinkClass =
+  "flex items-center gap-1 text-xs font-semibold text-brand hover:opacity-80 dark:text-indigo-300 dark:hover:text-indigo-200";
+
 function SectionTitle({
   children,
   required,
@@ -48,7 +54,7 @@ function SectionTitle({
   required?: boolean;
 }) {
   return (
-    <h2 className="text-[11px] font-semibold uppercase tracking-wide text-gray-500">
+    <h2 className="text-[11px] font-semibold uppercase tracking-wide text-gray-500 dark:text-gray-400">
       {children}
       {required && <span className="text-red-500"> *</span>}
     </h2>
@@ -57,15 +63,15 @@ function SectionTitle({
 
 function FieldLabel({ children }: { children: React.ReactNode }) {
   return (
-    <label className="block text-sm font-medium text-gray-700 mb-1.5">{children}</label>
+    <label className="block text-sm font-medium text-gray-700 mb-1.5 dark:text-gray-300">{children}</label>
   );
 }
 
 function SummaryRow({ label, value }: { label: string; value: React.ReactNode }) {
   return (
     <div className="flex items-start justify-between gap-4 py-2 text-sm">
-      <span className="text-gray-500 shrink-0">{label}</span>
-      <span className="font-medium text-gray-900 text-right">{value || "—"}</span>
+      <span className="text-gray-500 shrink-0 dark:text-gray-400">{label}</span>
+      <span className="font-medium text-gray-900 text-right dark:text-gray-100">{value || "—"}</span>
     </div>
   );
 }
@@ -113,16 +119,16 @@ function ProductLineEditor({
       : null;
 
   return (
-    <div className="rounded-xl border border-gray-200 bg-gray-50/50 p-4 space-y-4">
+    <div className="rounded-xl border border-gray-200 bg-gray-50/50 p-4 space-y-4 dark:border-gray-700 dark:bg-gray-800/40">
       <div className="flex items-center justify-between gap-3">
-        <p className="text-sm font-semibold text-gray-800">
+        <p className="text-sm font-semibold text-gray-800 dark:text-gray-100">
           Producto {totalLines - index}
         </p>
         {canRemove && (
           <button
             type="button"
             onClick={() => onRemove(line.key)}
-            className="inline-flex items-center gap-1 text-xs font-semibold text-red-600 hover:text-red-700"
+            className="inline-flex items-center gap-1 text-xs font-semibold text-red-600 hover:text-red-700 dark:text-red-400 dark:hover:text-red-300"
           >
             <Trash2 className="h-3.5 w-3.5" />
             Quitar
@@ -136,16 +142,16 @@ function ProductLineEditor({
           <button
             type="button"
             onClick={() => onOpenNewProduct(line.key)}
-            className="flex items-center gap-1 text-xs font-semibold text-brand hover:opacity-80"
+            className={actionLinkClass}
           >
             <Plus className="h-3 w-3" /> Nuevo
           </button>
         </div>
         {selectedProduct ? (
-          <div className="flex items-center justify-between gap-3 rounded-xl border border-gray-200 bg-white px-4 py-3">
-            <p className="text-sm text-gray-900">
+          <div className="flex items-center justify-between gap-3 rounded-xl border border-gray-200 bg-white px-4 py-3 dark:border-gray-600 dark:bg-gray-900">
+            <p className="text-sm text-gray-900 dark:text-gray-100">
               <span className="font-semibold">{selectedProduct.name}</span>
-              <span className="text-gray-500">
+              <span className="text-gray-500 dark:text-gray-400">
                 {" "}
                 · {CATEGORY_LABELS[selectedProduct.category as ProductCategory]} ·{" "}
                 {selectedProduct.warranty_months} meses
@@ -156,7 +162,7 @@ function ProductLineEditor({
               onClick={() =>
                 onChange(line.key, { productId: "", productSearch: "", identifier: "" })
               }
-              className="text-xs font-semibold text-brand hover:opacity-80 shrink-0"
+              className="text-xs font-semibold text-brand hover:opacity-80 shrink-0 dark:text-indigo-300 dark:hover:text-indigo-200"
             >
               Cambiar
             </button>
@@ -170,12 +176,12 @@ function ProductLineEditor({
               onChange={(e) =>
                 onChange(line.key, { productSearch: e.target.value, productId: "" })
               }
-              className="w-full rounded-xl border border-gray-200 bg-white px-3.5 py-2.5 text-sm focus:border-brand focus:outline-none focus:ring-2 focus:ring-brand/10 transition-all"
+              className={fieldInputClass}
             />
             {trimmedSearch.length >= 2 && (
-              <div className="mt-2 max-h-40 overflow-y-auto rounded-xl border border-gray-100 bg-white divide-y divide-gray-50">
+              <div className="mt-2 max-h-40 overflow-y-auto rounded-xl border border-gray-100 bg-white divide-y divide-gray-50 dark:border-gray-700 dark:bg-gray-900 dark:divide-gray-800">
                 {filteredProducts.length === 0 ? (
-                  <p className="px-4 py-6 text-sm text-gray-400 text-center">
+                  <p className="px-4 py-6 text-sm text-gray-400 text-center dark:text-gray-500">
                     Sin resultados
                   </p>
                 ) : (
@@ -186,7 +192,7 @@ function ProductLineEditor({
                       onClick={() =>
                         onChange(line.key, { productId: p.id, productSearch: "" })
                       }
-                      className="w-full text-left px-4 py-3 text-sm text-gray-700 hover:bg-gray-50 transition-colors"
+                      className="w-full text-left px-4 py-3 text-sm text-gray-700 hover:bg-gray-50 transition-colors dark:text-gray-200 dark:hover:bg-gray-800"
                     >
                       {p.name}
                       <span className="text-gray-400 ml-2 font-normal">
@@ -215,12 +221,12 @@ function ProductLineEditor({
               ? "15 dígitos numéricos"
               : "Referencia del producto"
           }
-          className="w-full rounded-xl border border-gray-200 bg-white px-3.5 py-2.5 text-sm focus:border-brand focus:outline-none focus:ring-2 focus:ring-brand/10 transition-all disabled:bg-gray-100 disabled:text-gray-400"
+          className={`${fieldInputClass} disabled:bg-gray-100 disabled:text-gray-400 dark:disabled:bg-gray-800 dark:disabled:text-gray-500`}
         />
       </div>
 
       {selectedProduct && line.identifier.trim() && previewEndDate && (
-        <p className="text-xs text-gray-500">
+        <p className="text-xs text-gray-500 dark:text-gray-400">
           Vence {formatDate(previewEndDate)} · {selectedProduct.warranty_months} meses
         </p>
       )}
@@ -375,18 +381,18 @@ export function WarrantyForm({
 
   return (
     <>
-      <div className="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm mb-6 flex items-start justify-between gap-4">
+      <div className="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm mb-6 flex items-start justify-between gap-4 dark:border-gray-800 dark:bg-gray-900">
         <div>
-          <p className="text-sm text-gray-500">Garantías / Nueva garantía</p>
-          <h1 className="text-2xl font-bold text-gray-900 mt-1">Registrar venta</h1>
-          <p className="text-sm text-gray-500 mt-1 max-w-xl">
-            Una venta puede incluir varios productos. Cada uno queda con su propia
+          <p className="text-sm text-gray-500 dark:text-gray-400">Garantías / Nueva garantía</p>
+          <h1 className="text-2xl font-bold text-gray-900 mt-1 dark:text-gray-100">Nueva garantía</h1>
+          <p className="text-sm text-gray-500 mt-1 max-w-xl dark:text-gray-400">
+            Puedes registrar varios productos a la vez. Cada uno queda con su propia
             garantía e identificador (IMEI o referencia).
           </p>
         </div>
         <Link
           href="/garantias"
-          className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border border-gray-200 text-gray-500 hover:bg-gray-50 hover:text-gray-900 transition-colors"
+          className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border border-gray-200 text-gray-500 hover:bg-gray-50 hover:text-gray-900 transition-colors dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-800 dark:hover:text-gray-100"
           title="Volver"
         >
           <ArrowLeft className="h-4 w-4" />
@@ -396,23 +402,23 @@ export function WarrantyForm({
       <form id="warranty-form" onSubmit={handleSubmit}>
         <div className="grid grid-cols-1 lg:grid-cols-[1fr_320px] gap-6 items-start">
           <div className="space-y-4">
-            <section className="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm">
+            <section className="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm dark:border-gray-800 dark:bg-gray-900">
               <div className="flex items-center justify-between mb-4">
                 <SectionTitle required>Cliente</SectionTitle>
                 <button
                   type="button"
                   onClick={() => setShowCustomerModal(true)}
-                  className="flex items-center gap-1 text-xs font-semibold text-brand hover:opacity-80"
+                  className={actionLinkClass}
                 >
                   <Plus className="h-3 w-3" /> Nuevo cliente
                 </button>
               </div>
               {selectedCustomer ? (
-                <div className="flex items-center justify-between gap-3 rounded-xl border border-gray-200 bg-gray-50 px-4 py-3">
-                  <p className="text-sm text-gray-900">
+                <div className="flex items-center justify-between gap-3 rounded-xl border border-gray-200 bg-gray-50 px-4 py-3 dark:border-gray-600 dark:bg-gray-800/50">
+                  <p className="text-sm text-gray-900 dark:text-gray-100">
                     <span className="font-semibold">{selectedCustomer.name}</span>
                     {selectedCustomer.document_number && (
-                      <span className="text-gray-500">
+                      <span className="text-gray-500 dark:text-gray-400">
                         {" "}
                         · {selectedCustomer.document_number}
                       </span>
@@ -424,7 +430,7 @@ export function WarrantyForm({
                       setCustomerId("");
                       setCustomerSearch("");
                     }}
-                    className="text-xs font-semibold text-brand hover:opacity-80 shrink-0"
+                    className="text-xs font-semibold text-brand hover:opacity-80 shrink-0 dark:text-indigo-300 dark:hover:text-indigo-200"
                   >
                     Cambiar
                   </button>
@@ -440,12 +446,12 @@ export function WarrantyForm({
                       setCustomerSearch(e.target.value);
                       if (customerId) setCustomerId("");
                     }}
-                    className="w-full rounded-xl border border-gray-200 px-3.5 py-2.5 text-sm focus:border-brand focus:outline-none focus:ring-2 focus:ring-brand/10 transition-all"
+                    className={fieldInputClass}
                   />
                   {showCustomerResults && (
-                    <div className="mt-3 max-h-48 overflow-y-auto rounded-xl border border-gray-100 divide-y divide-gray-50">
+                    <div className="mt-3 max-h-48 overflow-y-auto rounded-xl border border-gray-100 bg-white divide-y divide-gray-50 dark:border-gray-700 dark:bg-gray-900 dark:divide-gray-800">
                       {filteredCustomers.length === 0 ? (
-                        <p className="px-4 py-8 text-sm text-gray-400 text-center">
+                        <p className="px-4 py-8 text-sm text-gray-400 text-center dark:text-gray-500">
                           Sin resultados para &ldquo;{trimmedCustomerSearch}&rdquo;
                         </p>
                       ) : (
@@ -454,7 +460,7 @@ export function WarrantyForm({
                             key={c.id}
                             type="button"
                             onClick={() => selectCustomer(c.id)}
-                            className="w-full text-left px-4 py-3 text-sm text-gray-700 hover:bg-gray-50 transition-colors"
+                            className="w-full text-left px-4 py-3 text-sm text-gray-700 hover:bg-gray-50 transition-colors dark:text-gray-200 dark:hover:bg-gray-800"
                           >
                             {c.name}
                             {c.document_number && (
@@ -468,7 +474,7 @@ export function WarrantyForm({
                     </div>
                   )}
                   {!showCustomerResults && (
-                    <p className="mt-3 text-xs text-gray-400">
+                    <p className="mt-3 text-xs text-gray-400 dark:text-gray-500">
                       Escribe al menos 2 caracteres para buscar un cliente.
                     </p>
                   )}
@@ -476,9 +482,9 @@ export function WarrantyForm({
               )}
             </section>
 
-            <section className="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm">
+            <section className="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm dark:border-gray-800 dark:bg-gray-900">
               <div className="mb-4">
-                <SectionTitle required>Detalle de la venta</SectionTitle>
+                <SectionTitle required>Fecha de registro</SectionTitle>
               </div>
               <DatePicker
                 name="sale_date"
@@ -489,13 +495,13 @@ export function WarrantyForm({
               />
             </section>
 
-            <section className="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm space-y-4">
+            <section className="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm space-y-4 dark:border-gray-800 dark:bg-gray-900">
               <div className="flex items-center justify-between gap-3">
-                <SectionTitle required>Productos de la venta</SectionTitle>
+                <SectionTitle required>Productos</SectionTitle>
                 <button
                   type="button"
                   onClick={addLine}
-                  className="flex items-center gap-1 text-xs font-semibold text-brand hover:opacity-80"
+                  className={actionLinkClass}
                 >
                   <Plus className="h-3 w-3" /> Agregar producto
                 </button>
@@ -522,26 +528,26 @@ export function WarrantyForm({
           </div>
 
           <div className="space-y-4 lg:sticky lg:top-20">
-            <section className="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm">
+            <section className="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm dark:border-gray-800 dark:bg-gray-900">
               <div className="mb-4">
                 <SectionTitle>Notas</SectionTitle>
               </div>
-              <FieldLabel>Observaciones de la venta (opcional)</FieldLabel>
+              <FieldLabel>Observaciones (opcional)</FieldLabel>
               <textarea
                 rows={4}
                 value={notes}
                 onChange={(e) => setNotes(e.target.value)}
                 placeholder="Ej. Combo iPad + iPhone. Cliente solicitó factura a nombre de la empresa."
-                className="w-full rounded-xl border border-gray-200 px-3.5 py-2.5 text-sm focus:border-brand focus:outline-none focus:ring-2 focus:ring-brand/10 transition-all resize-none"
+                className={`${fieldInputClass} resize-none`}
               />
             </section>
 
-            <section className="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm">
+            <section className="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm dark:border-gray-800 dark:bg-gray-900">
               <div className="mb-3">
-                <SectionTitle>Resumen de la venta</SectionTitle>
+                <SectionTitle>Resumen</SectionTitle>
               </div>
 
-              <div className="divide-y divide-gray-100">
+              <div className="divide-y divide-gray-100 dark:divide-gray-800">
                 <SummaryRow label="Cliente" value={selectedCustomer?.name} />
                 <SummaryRow
                   label="Fecha de venta"
@@ -558,7 +564,7 @@ export function WarrantyForm({
               </div>
 
               {completedLines.length > 0 && (
-                <ul className="mt-3 space-y-2 border-t border-gray-100 pt-3">
+                <ul className="mt-3 space-y-2 border-t border-gray-100 pt-3 dark:border-gray-800">
                   {completedLines.map((line) => {
                     const product = products.find((p) => p.id === line.productId);
                     if (!product) return null;
@@ -569,12 +575,12 @@ export function WarrantyForm({
                     return (
                       <li
                         key={line.key}
-                        className="text-xs text-gray-600 flex justify-between gap-2"
+                        className="text-xs text-gray-600 flex justify-between gap-2 dark:text-gray-400"
                       >
-                        <span className="truncate font-medium text-gray-800">
+                        <span className="truncate font-medium text-gray-800 dark:text-gray-200">
                           {product.name}
                         </span>
-                        <span className="shrink-0 text-gray-400">
+                        <span className="shrink-0 text-gray-400 dark:text-gray-500">
                           vence {formatDate(end)}
                         </span>
                       </li>
@@ -584,14 +590,14 @@ export function WarrantyForm({
               )}
 
               {worstStatus && (
-                <div className="mt-3 pt-3 border-t border-gray-100 flex items-center justify-between">
-                  <span className="text-sm text-gray-500">Estado estimado</span>
+                <div className="mt-3 pt-3 border-t border-gray-100 flex items-center justify-between dark:border-gray-800">
+                  <span className="text-sm text-gray-500 dark:text-gray-400">Estado estimado</span>
                   <StatusBadge status={worstStatus} />
                 </div>
               )}
 
               {error && (
-                <p className="mt-4 text-sm text-red-600 bg-red-50 rounded-xl px-3 py-2 font-medium">
+                <p className="mt-4 text-sm text-red-600 bg-red-50 rounded-xl px-3 py-2 font-medium dark:text-red-300 dark:bg-red-500/10">
                   {error}
                 </p>
               )}
@@ -605,7 +611,7 @@ export function WarrantyForm({
                   ? "Registrando..."
                   : lineItems.length === 1
                     ? "Confirmar garantía"
-                    : `Registrar venta (${lineItems.length} productos)`}
+                    : `Confirmar garantías (${lineItems.length} productos)`}
               </Button>
             </section>
           </div>

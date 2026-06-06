@@ -17,6 +17,7 @@
   --brand-light: #eef0f8;
   --brand-muted: rgba(33, 35, 85, 0.08);
   --brand-ring: rgba(33, 35, 85, 0.18);
+  --mobile-nav-height: 4.5rem;
 }
 
 .dark {
@@ -77,8 +78,16 @@ body {
   opacity: 0.8;
 }
 
-.dark .link-brand {
+.dark .link-brand,
+.dark a.text-brand,
+.dark a.link-brand {
   color: #a5b4fc;
+}
+
+.dark .link-brand:hover,
+.dark a.text-brand:hover,
+.dark a.link-brand:hover {
+  color: #c7d2fe;
 }
 
 /* Compatibilidad dark para utilidades existentes */
@@ -162,4 +171,93 @@ body {
 
 .dark .text-gray-400:where(.inline-flex, button, a):hover {
   color: #c7d2fe;
+}
+
+/* Certificado de garantía: siempre aspecto de documento impreso (claro) */
+.certificate-document {
+  color-scheme: light;
+  background-color: #ffffff !important;
+  border-color: #e5e7eb !important;
+  color: #111827;
+}
+
+.certificate-document__header,
+.certificate-document__section {
+  border-color: #e5e7eb !important;
+}
+
+.certificate-document__logo-fallback {
+  background-color: #212355 !important;
+  color: #ffffff !important;
+}
+
+.certificate-document__title,
+.certificate-document__value {
+  color: #111827 !important;
+}
+
+.certificate-document__subtitle,
+.certificate-document__body {
+  color: #374151 !important;
+}
+
+.certificate-document__label,
+.certificate-document__meta,
+.certificate-document__footer {
+  color: #6b7280 !important;
+}
+
+.certificate-document__note {
+  background-color: #f9fafb !important;
+  border-color: #e5e7eb !important;
+}
+
+@media print {
+  body {
+    background: white !important;
+  }
+
+  header,
+  aside,
+  nav[aria-label="Navegación principal"] {
+    display: none !important;
+  }
+
+  main {
+    padding: 0 !important;
+    max-width: none !important;
+  }
+}
+
+/* Panel vidrio líquido (búsqueda global) */
+.glass-panel-search {
+  background: linear-gradient(
+    165deg,
+    rgba(22, 26, 42, 0.97) 0%,
+    rgba(11, 13, 22, 0.98) 100%
+  );
+  backdrop-filter: blur(28px) saturate(140%);
+  -webkit-backdrop-filter: blur(28px) saturate(140%);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow:
+    0 16px 48px rgba(0, 0, 0, 0.55),
+    0 1px 0 rgba(255, 255, 255, 0.08) inset;
+}
+
+.glass-panel {
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.55);
+  box-shadow:
+    0 4px 24px rgba(33, 35, 85, 0.1),
+    0 1px 0 rgba(255, 255, 255, 0.6) inset;
+}
+
+.dark .glass-panel {
+  background: rgba(12, 14, 22, 0.96);
+  border-color: rgba(255, 255, 255, 0.1);
+  box-shadow:
+    0 8px 32px rgba(0, 0, 0, 0.55),
+    0 1px 0 rgba(255, 255, 255, 0.06) inset;
 }

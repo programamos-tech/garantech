@@ -3,10 +3,21 @@
 import { revalidatePath } from "next/cache";
 import { createClient } from "@/lib/supabase/server";
 import { getStoreId } from "@/lib/store";
+import { normalizeCustomerFields, validateCustomerFields } from "@/lib/customer";
 
 export async function createCustomer(formData: FormData) {
   const storeId = await getStoreId();
   if (!storeId) return { error: "No autorizado" };
+
+  const fields = normalizeCustomerFields({
+    name: (formData.get("name") as string) ?? "",
+    document_number: (formData.get("document_number") as string) ?? "",
+    phone: (formData.get("phone") as string) ?? "",
+    email: (formData.get("email") as string) ?? "",
+  });
+
+  const validationError = validateCustomerFields(fields);
+  if (validationError) return { error: validationError };
 
   const supabase = await createClient();
 
@@ -14,10 +25,10 @@ export async function createCustomer(formData: FormData) {
     .from("customers")
     .insert({
       store_id: storeId,
-      name: formData.get("name") as string,
-      phone: (formData.get("phone") as string) || null,
-      email: (formData.get("email") as string) || null,
-      document_number: (formData.get("document_number") as string) || null,
+      name: fields.name,
+      phone: fields.phone,
+      email: fields.email,
+      document_number: fields.document_number,
     })
     .select()
     .single();
@@ -27,7 +38,6 @@ export async function createCustomer(formData: FormData) {
   revalidatePath("/clientes");
   revalidatePath("/clientes/nuevo");
   revalidatePath("/clientes", "layout");
-  revalidatePath("/dashboard");
   revalidatePath("/garantias");
   revalidatePath("/garantias/nueva");
   return { success: true, customer: data };
