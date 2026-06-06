@@ -36,6 +36,9 @@ export function Sidebar({ store }: { store: Store }) {
             className="w-[82%] h-auto mx-auto block"
             priority
           />
+          <p className="mt-3 px-2 text-center text-xs font-medium leading-relaxed text-white/55">
+            Gestiona garantías y postventa de tu tienda
+          </p>
         </div>
 
         <div className="px-4 py-4">
@@ -68,6 +71,7 @@ export function Sidebar({ store }: { store: Store }) {
               <Link
                 key={href}
                 href={href}
+                prefetch
                 className={`flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-semibold transition-all duration-150 ${
                   active
                     ? "bg-white text-brand shadow-sm dark:bg-white dark:text-brand"
@@ -81,6 +85,7 @@ export function Sidebar({ store }: { store: Store }) {
           })}
           <Link
             href="/configuracion"
+            prefetch
             className={`flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-semibold transition-all duration-150 ${
               pathname.startsWith("/configuracion")
                 ? "bg-white text-brand shadow-sm dark:bg-white dark:text-brand"
@@ -123,6 +128,7 @@ export function MobileNav() {
             <Link
               key={href}
               href={href}
+              prefetch
               className={`flex min-w-0 flex-1 flex-col items-center justify-center gap-0.5 px-1 py-1.5 text-[10px] font-semibold transition-colors ${
                 active ? "text-white" : "text-white/50 hover:text-white/80"
               }`}
